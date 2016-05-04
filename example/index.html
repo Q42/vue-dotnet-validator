@@ -1,0 +1,25 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Vue dotnet validator example</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body id="example-site">
+
+<vue-dotnet-validator-group inline-template>
+    <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
+        <validator inline-template>
+            <span asp-validation-for="LastName" v-el:message></span>
+            <input type="text" asp-for="LastName" v-el:field v-model="value" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
+        </validator>
+        <button type="submit">Register</button>
+    </form>
+</vue-dotnet-validator-group>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
+<script src="../dist/example.js"></script>
+</body>
+</html>
