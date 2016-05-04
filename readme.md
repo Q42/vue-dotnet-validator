@@ -17,7 +17,7 @@ Using this library requires changes on two places in your application, JavaScrip
 
 ###JavaScript
 This registers the vue components so that vue.js knows what to activate. 
-```
+```JavaScript
 var vueDotnetValidator from 'vue-dotnet-validator'
 
 Vue.component('vue-dotnet-validator', vueDotnetValidator.validator; 
@@ -28,7 +28,7 @@ Vue.component('vue-dotnet-validator-group', vueDotnetValidator.validatorGroup;
 
 ###Cshtml
 The following code should be added to your cshtml forms. This makes sure that the validator logic is activated and adds the required references to DOM-nodes.
-```
+```HTML
 <vue-dotnet-validator-group inline-template>
     <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
         <validator inline-template>
@@ -44,7 +44,7 @@ The following code should be added to your cshtml forms. This makes sure that th
 ##Creating custom validators
 It is possible to create your own validators, below is an example of a very simple custom validator.
 ###JavaScript
-```
+```JavaScript
 var vueDotnetValidator from 'vue-dotnet-validator'
 
 class MyCustomValidator extends vueDotnetValidator.BaseValidator {
