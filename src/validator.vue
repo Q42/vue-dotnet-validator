@@ -3,6 +3,7 @@
 
   export default {
     name: 'vue-dotnet-validator',
+    validators: validators,
     props: {
       'value': {
         default: ''

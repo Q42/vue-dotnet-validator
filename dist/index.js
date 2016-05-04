@@ -46,20 +46,63 @@
 
 	'use strict';
 
-	var validator = __webpack_require__(1);
+	var validator = __webpack_require__(2);
 	var validatorGroup = __webpack_require__(45);
+	var baseValidator = __webpack_require__(1);
 
 	module.exports = {
 	    validatorGroup: validatorGroup,
-	    validator: validator
+	    validator: validator,
+	    validatorBaseClass: baseValidator
 	};
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * This class contains the basic api of a custom validator on the portal site.
+	 */
+
+	var BaseValidator = function () {
+	  function BaseValidator(message, dataAttributes) {
+	    _classCallCheck(this, BaseValidator);
+
+	    this.message = message;
+	    this.attributes = dataAttributes;
+	  }
+
+	  _createClass(BaseValidator, [{
+	    key: "getMessage",
+	    value: function getMessage() {
+	      return this.message;
+	    }
+	  }, {
+	    key: "isValid",
+	    value: function isValid() {}
+	  }]);
+
+	  return BaseValidator;
+	}();
+
+	exports.default = BaseValidator;
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(2)
+	__vue_script__ = __webpack_require__(3)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
@@ -82,7 +125,7 @@
 	})()}
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -91,11 +134,11 @@
 	  value: true
 	});
 
-	var _keys = __webpack_require__(3);
+	var _keys = __webpack_require__(4);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
-	var _validators = __webpack_require__(38);
+	var _validators = __webpack_require__(39);
 
 	var _validators2 = _interopRequireDefault(_validators);
 
@@ -103,6 +146,7 @@
 
 	exports.default = {
 	  name: 'vue-dotnet-validator',
+	  allValidators: _validators2.default,
 	  props: {
 	    'value': {
 	      default: ''
@@ -115,6 +159,7 @@
 	    };
 	  },
 	  attached: function attached() {
+	    console.log('VALIDATORS: ', _validators2.default);
 	    if (!this.$els.field) {
 	      console.error('Field is missing!', this);
 	      return;
@@ -200,21 +245,12 @@
 	};
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	module.exports = { "default": __webpack_require__(4), __esModule: true };
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	__webpack_require__(5);
-	module.exports = __webpack_require__(25).Object.keys;
+	module.exports = { "default": __webpack_require__(5), __esModule: true };
 
 /***/ },
 /* 5 */
@@ -222,15 +258,8 @@
 
 	'use strict';
 
-	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(6),
-	    $keys = __webpack_require__(8);
-
-	__webpack_require__(23)('keys', function () {
-	  return function keys(it) {
-	    return $keys(toObject(it));
-	  };
-	});
+	__webpack_require__(6);
+	module.exports = __webpack_require__(26).Object.keys;
 
 /***/ },
 /* 6 */
@@ -238,14 +267,30 @@
 
 	'use strict';
 
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(7),
+	    $keys = __webpack_require__(9);
+
+	__webpack_require__(24)('keys', function () {
+	  return function keys(it) {
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(7);
+	var defined = __webpack_require__(8);
 	module.exports = function (it) {
 	  return Object(defined(it));
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -257,29 +302,29 @@
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys = __webpack_require__(9),
-	    enumBugKeys = __webpack_require__(22);
+	var $keys = __webpack_require__(10),
+	    enumBugKeys = __webpack_require__(23);
 
 	module.exports = Object.keys || function keys(O) {
 	  return $keys(O, enumBugKeys);
 	};
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var has = __webpack_require__(10),
-	    toIObject = __webpack_require__(11),
-	    arrayIndexOf = __webpack_require__(14)(false),
-	    IE_PROTO = __webpack_require__(18)('IE_PROTO');
+	var has = __webpack_require__(11),
+	    toIObject = __webpack_require__(12),
+	    arrayIndexOf = __webpack_require__(15)(false),
+	    IE_PROTO = __webpack_require__(19)('IE_PROTO');
 
 	module.exports = function (object, names) {
 	  var O = toIObject(object),
@@ -297,7 +342,7 @@
 	};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -308,32 +353,32 @@
 	};
 
 /***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(12),
-	    defined = __webpack_require__(7);
-	module.exports = function (it) {
-	  return IObject(defined(it));
-	};
-
-/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(13),
+	    defined = __webpack_require__(8);
+	module.exports = function (it) {
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(13);
+	var cof = __webpack_require__(14);
 	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -345,16 +390,16 @@
 	};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// false -> Array#indexOf
 	// true  -> Array#includes
-	var toIObject = __webpack_require__(11),
-	    toLength = __webpack_require__(15),
-	    toIndex = __webpack_require__(17);
+	var toIObject = __webpack_require__(12),
+	    toLength = __webpack_require__(16),
+	    toIndex = __webpack_require__(18);
 	module.exports = function (IS_INCLUDES) {
 	  return function ($this, el, fromIndex) {
 	    var O = toIObject($this),
@@ -375,20 +420,20 @@
 	};
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(16),
+	var toInteger = __webpack_require__(17),
 	    min = Math.min;
 	module.exports = function (it) {
 	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 	};
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -401,12 +446,12 @@
 	};
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var toInteger = __webpack_require__(16),
+	var toInteger = __webpack_require__(17),
 	    max = Math.max,
 	    min = Math.min;
 	module.exports = function (index, length) {
@@ -415,24 +460,24 @@
 	};
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var shared = __webpack_require__(19)('keys'),
-	    uid = __webpack_require__(21);
-	module.exports = function (key) {
-	  return shared[key] || (shared[key] = uid(key));
-	};
-
-/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var global = __webpack_require__(20),
+	var shared = __webpack_require__(20)('keys'),
+	    uid = __webpack_require__(22);
+	module.exports = function (key) {
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var global = __webpack_require__(21),
 	    SHARED = '__core-js_shared__',
 	    store = global[SHARED] || (global[SHARED] = {});
 	module.exports = function (key) {
@@ -440,7 +485,7 @@
 	};
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -450,7 +495,7 @@
 	if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -462,7 +507,7 @@
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -471,15 +516,15 @@
 	module.exports = 'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'.split(',');
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(24),
-	    core = __webpack_require__(25),
-	    fails = __webpack_require__(34);
+	var $export = __webpack_require__(25),
+	    core = __webpack_require__(26),
+	    fails = __webpack_require__(35);
 	module.exports = function (KEY, exec) {
 	  var fn = (core.Object || {})[KEY] || Object[KEY],
 	      exp = {};
@@ -490,15 +535,15 @@
 	};
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var global = __webpack_require__(20),
-	    core = __webpack_require__(25),
-	    ctx = __webpack_require__(26),
-	    hide = __webpack_require__(28),
+	var global = __webpack_require__(21),
+	    core = __webpack_require__(26),
+	    ctx = __webpack_require__(27),
+	    hide = __webpack_require__(29),
 	    PROTOTYPE = 'prototype';
 
 	var $export = function $export(type, name, source) {
@@ -563,7 +608,7 @@
 	module.exports = $export;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -572,13 +617,13 @@
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(27);
+	var aFunction = __webpack_require__(28);
 	module.exports = function (fn, that, length) {
 	  aFunction(fn);
 	  if (that === undefined) return fn;
@@ -602,7 +647,7 @@
 	};
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -613,14 +658,14 @@
 	};
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var dP = __webpack_require__(29),
-	    createDesc = __webpack_require__(37);
-	module.exports = __webpack_require__(33) ? function (object, key, value) {
+	var dP = __webpack_require__(30),
+	    createDesc = __webpack_require__(38);
+	module.exports = __webpack_require__(34) ? function (object, key, value) {
 	  return dP.f(object, key, createDesc(1, value));
 	} : function (object, key, value) {
 	  object[key] = value;
@@ -628,17 +673,17 @@
 	};
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var anObject = __webpack_require__(30),
-	    IE8_DOM_DEFINE = __webpack_require__(32),
-	    toPrimitive = __webpack_require__(36),
+	var anObject = __webpack_require__(31),
+	    IE8_DOM_DEFINE = __webpack_require__(33),
+	    toPrimitive = __webpack_require__(37),
 	    dP = Object.defineProperty;
 
-	exports.f = __webpack_require__(33) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+	exports.f = __webpack_require__(34) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
@@ -651,19 +696,19 @@
 	};
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(31);
+	var isObject = __webpack_require__(32);
 	module.exports = function (it) {
 	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
 	  return it;
 	};
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -675,32 +720,32 @@
 	};
 
 /***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = !__webpack_require__(33) && !__webpack_require__(34)(function () {
-	  return Object.defineProperty(__webpack_require__(35)('div'), 'a', { get: function get() {
-	      return 7;
-	    } }).a != 7;
-	});
-
-/***/ },
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(34)(function () {
-	  return Object.defineProperty({}, 'a', { get: function get() {
+	module.exports = !__webpack_require__(34) && !__webpack_require__(35)(function () {
+	  return Object.defineProperty(__webpack_require__(36)('div'), 'a', { get: function get() {
 	      return 7;
 	    } }).a != 7;
 	});
 
 /***/ },
 /* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(35)(function () {
+	  return Object.defineProperty({}, 'a', { get: function get() {
+	      return 7;
+	    } }).a != 7;
+	});
+
+/***/ },
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -714,13 +759,13 @@
 	};
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(31),
-	    document = __webpack_require__(20).document
+	var isObject = __webpack_require__(32),
+	    document = __webpack_require__(21).document
 	// in old IE typeof document.createElement is 'object'
 	,
 	    is = isObject(document) && isObject(document.createElement);
@@ -729,13 +774,13 @@
 	};
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(31);
+	var isObject = __webpack_require__(32);
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
 	module.exports = function (it, S) {
@@ -748,7 +793,7 @@
 	};
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -763,7 +808,7 @@
 	};
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -774,7 +819,7 @@
 	// This is the total list of available validators.
 	// Note: The list here is in logical order, if you are adding or moving validators around, check if the order makes sense.
 	exports.default = {
-	  required: __webpack_require__(39),
+	  required: __webpack_require__(40),
 	  range: __webpack_require__(41),
 	  regex: __webpack_require__(42),
 	  minlength: __webpack_require__(43),
@@ -782,14 +827,14 @@
 	};
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _basevalidator = __webpack_require__(40);
+	var _basevalidator = __webpack_require__(1);
 
 	var _basevalidator2 = _interopRequireDefault(_basevalidator);
 
@@ -823,47 +868,6 @@
 	module.exports = RequiredValidator;
 
 /***/ },
-/* 40 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * This class contains the basic api of a custom validator on the portal site.
-	 */
-
-	var BaseValidator = function () {
-	  function BaseValidator(message, dataAttributes) {
-	    _classCallCheck(this, BaseValidator);
-
-	    this.message = message;
-	    this.attributes = dataAttributes;
-	  }
-
-	  _createClass(BaseValidator, [{
-	    key: "getMessage",
-	    value: function getMessage() {
-	      return this.message;
-	    }
-	  }, {
-	    key: "isValid",
-	    value: function isValid() {}
-	  }]);
-
-	  return BaseValidator;
-	}();
-
-	exports.default = BaseValidator;
-
-/***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -871,7 +875,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _basevalidator = __webpack_require__(40);
+	var _basevalidator = __webpack_require__(1);
 
 	var _basevalidator2 = _interopRequireDefault(_basevalidator);
 
@@ -917,7 +921,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _basevalidator = __webpack_require__(40);
+	var _basevalidator = __webpack_require__(1);
 
 	var _basevalidator2 = _interopRequireDefault(_basevalidator);
 
@@ -961,7 +965,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _basevalidator = __webpack_require__(40);
+	var _basevalidator = __webpack_require__(1);
 
 	var _basevalidator2 = _interopRequireDefault(_basevalidator);
 
@@ -1005,7 +1009,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _basevalidator = __webpack_require__(40);
+	var _basevalidator = __webpack_require__(1);
 
 	var _basevalidator2 = _interopRequireDefault(_basevalidator);
 
@@ -1111,7 +1115,7 @@
 	    }
 	  },
 	  components: {
-	    'validator': __webpack_require__(1)
+	    'validator': __webpack_require__(2)
 	  }
 	};
 
