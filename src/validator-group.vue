@@ -1,32 +1,32 @@
 <script>
-  module.exports = {
+  export default {
     name: 'vue-dotnet-validator-group',
-    data: function() {
+    data() {
       return {
         validators: [],
         loading: false
       }
     },
     methods: {
-      validate: function(event) {
-        var valid = true;
-        this.validators.forEach(function(validator) {
+      validate(event) {
+        let valid = true;
+        this.validators.forEach(validator => {
           if(!validator.isValid) {
-            valid = false;
-            event.preventDefault();
-          }
-          validator.blurField(); // Force showing validation.
-        });
+          valid = false;
+          event.preventDefault();
+        }
+        validator.blurField(); // Force showing validation.
+      });
         this.loading = valid;
         return false;
       }
     },
     events: {
-      'validator-created': function(validator) {
+      'validator-created'(validator) {
         this.validators.push(validator);
         return true; // bubble
       },
-      'validator-removed': function(validator) {
+      'validator-removed'(validator) {
         this.validators.splice(this.validators.indexOf(validator), 1);
         return true; // bubble
       }
@@ -34,5 +34,5 @@
     components: {
       'validator': require('./validator.vue')
     }
-  };
+  }
 </script>

@@ -1,20 +1,20 @@
 <script>
-  var validators = require('./validators/validators');
+  import validators from './validators/validators';
 
-  module.exports = {
+  export default {
     name: 'vue-dotnet-validator',
     props: {
       'value': {
         default: ''
       }
     },
-    data: function() {
+    data() {
       return {
         validators: [],
         blurred: false
       };
     },
-    attached: function() {
+    attached() {
       if(!this.$els.field) {
         console.error('Field is missing!', this);
         return;
@@ -33,37 +33,36 @@
 
       this.$els.field.addEventListener('blur', this.blurField);
     },
-    created: function() {
+    created() {
       this.$dispatch('validator-created', this);
     },
-    beforeDestroy: function() {
+    beforeDestroy() {
       this.$dispatch('validator-removed', this);
     },
     methods: {
-      blurField: function() {
+      blurField() {
         this.blurred = true;
         this.showValidationMessage();
         this.$dispatch('blur');
       },
       // Initializes custom validators by looking at the attributes in the DOM.
-      getValidators: function() {
-        var self = this;
-        var dataAttributes = this.getDataAttributes();
-        var validatorKeys = Object.keys(validators);
-        validatorKeys.forEach(function(validatorKey ) {
-          var validationMessage = dataAttributes['val-' + validatorKey];
-          if(!validationMessage) {
-            // Validator should not be activated
-            return;
-          }
-          self.validators.push(new validators[validatorKey](validationMessage, dataAttributes));
-        });
+      getValidators() {
+        let dataAttributes = this.getDataAttributes();
+        let validatorKeys = Object.keys(validators);
+        validatorKeys.forEach(validatorKey => {
+          let validationMessage = dataAttributes['val-' + validatorKey];
+        if(!validationMessage) {
+          // Validator should not be activated
+          return;
+        }
+        this.validators.push(new validators[validatorKey](validationMessage, dataAttributes));
+      });
       },
-      getDataAttributes: function() {
-        var dataset = {};
-        var element = this.$els.field;
-        for(var i=0; i < element.attributes.length; i++) {
-          var name = element.attributes[i].name;
+      getDataAttributes() {
+        let dataset = {};
+        let element = this.$els.field;
+        for(let i=0; i < element.attributes.length; i++) {
+          let name = element.attributes[i].name;
           if(name.indexOf('data-') !== 0) {
             continue;
           }
@@ -72,7 +71,7 @@
         }
         return dataset;
       },
-      showValidationMessage: function() {
+      showValidationMessage() {
         if(!this.blurred) {
           // Only show validation after blur.
           return;
@@ -81,22 +80,20 @@
       }
     },
     computed: {
-      isValid: function() {
-        var self = this;
-        return this.validators.filter(function(validator) {
-            return validator.isValid(self.value);
-        }).length === this.validators.length;
+      isValid() {
+        return this.validators.filter(validator => {
+                  return validator.isValid(this.value);
+      }).length === this.validators.length;
       },
       // Returns the error-message
-      validationMessage: function() {
-        var self = this;
-        var message = '';
-        this.validators.forEach(function(validator) {
-          var valid = validator.isValid(self.value);
-          if(!valid && !message) {
-            message = validator.getMessage();
-          }
-        });
+      validationMessage() {
+        let message = '';
+        this.validators.forEach(validator => {
+          const valid = validator.isValid(this.value);
+        if(!valid && !message) {
+          message = validator.getMessage();
+        }
+      });
         return message;
       }
     }
