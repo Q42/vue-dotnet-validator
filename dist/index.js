@@ -47,7 +47,7 @@
 	'use strict';
 
 	var validator = __webpack_require__(1);
-	var validatorGroup = __webpack_require__(41);
+	var validatorGroup = __webpack_require__(45);
 
 	module.exports = {
 	    validatorGroup: validatorGroup,
@@ -87,15 +87,21 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _keys = __webpack_require__(3);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
+	var _validators = __webpack_require__(38);
+
+	var _validators2 = _interopRequireDefault(_validators);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var validators = __webpack_require__(38);
-
-	module.exports = {
+	exports.default = {
 	  name: 'vue-dotnet-validator',
 	  props: {
 	    'value': {
@@ -130,23 +136,24 @@
 	  beforeDestroy: function beforeDestroy() {
 	    this.$dispatch('validator-removed', this);
 	  },
+
 	  methods: {
 	    blurField: function blurField() {
 	      this.blurred = true;
 	      this.showValidationMessage();
 	      this.$dispatch('blur');
 	    },
-
 	    getValidators: function getValidators() {
-	      var self = this;
+	      var _this = this;
+
 	      var dataAttributes = this.getDataAttributes();
-	      var validatorKeys = (0, _keys2.default)(validators);
+	      var validatorKeys = (0, _keys2.default)(_validators2.default);
 	      validatorKeys.forEach(function (validatorKey) {
 	        var validationMessage = dataAttributes['val-' + validatorKey];
 	        if (!validationMessage) {
 	          return;
 	        }
-	        self.validators.push(new validators[validatorKey](validationMessage, dataAttributes));
+	        _this.validators.push(new _validators2.default[validatorKey](validationMessage, dataAttributes));
 	      });
 	    },
 	    getDataAttributes: function getDataAttributes() {
@@ -171,17 +178,18 @@
 	  },
 	  computed: {
 	    isValid: function isValid() {
-	      var self = this;
+	      var _this2 = this;
+
 	      return this.validators.filter(function (validator) {
-	        return validator.isValid(self.value);
+	        return validator.isValid(_this2.value);
 	      }).length === this.validators.length;
 	    },
-
 	    validationMessage: function validationMessage() {
-	      var self = this;
+	      var _this3 = this;
+
 	      var message = '';
 	      this.validators.forEach(function (validator) {
-	        var valid = validator.isValid(self.value);
+	        var valid = validator.isValid(_this3.value);
 	        if (!valid && !message) {
 	          message = validator.getMessage();
 	        }
@@ -760,10 +768,17 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	// This is the total list of available validators.
 	// Note: The list here is in logical order, if you are adding or moving validators around, check if the order makes sense.
-	module.exports = {
-	  maxlength: __webpack_require__(39)
+	exports.default = {
+	  required: __webpack_require__(39),
+	  range: __webpack_require__(41),
+	  regex: __webpack_require__(42),
+	  minlength: __webpack_require__(43),
+	  maxlength: __webpack_require__(44)
 	};
 
 /***/ },
@@ -786,29 +801,26 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var MaxLengthValidator = function (_BaseValidator) {
-	  _inherits(MaxLengthValidator, _BaseValidator);
+	var RequiredValidator = function (_BaseValidator) {
+	  _inherits(RequiredValidator, _BaseValidator);
 
-	  function MaxLengthValidator(message, attributes) {
-	    _classCallCheck(this, MaxLengthValidator);
+	  function RequiredValidator() {
+	    _classCallCheck(this, RequiredValidator);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MaxLengthValidator).call(this, message, attributes));
-
-	    _this.maxLength = attributes['val-maxlength-max'];
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(RequiredValidator).apply(this, arguments));
 	  }
 
-	  _createClass(MaxLengthValidator, [{
+	  _createClass(RequiredValidator, [{
 	    key: 'isValid',
 	    value: function isValid(value) {
-	      return !value || value.length <= this.maxLength;
+	      return !!value;
 	    }
 	  }]);
 
-	  return MaxLengthValidator;
+	  return RequiredValidator;
 	}(_basevalidator2.default);
 
-	module.exports = MaxLengthValidator;
+	module.exports = RequiredValidator;
 
 /***/ },
 /* 40 */
@@ -855,8 +867,186 @@
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _basevalidator = __webpack_require__(40);
+
+	var _basevalidator2 = _interopRequireDefault(_basevalidator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RangeValidator = function (_BaseValidator) {
+	  _inherits(RangeValidator, _BaseValidator);
+
+	  function RangeValidator(message, attributes) {
+	    _classCallCheck(this, RangeValidator);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(RangeValidator).call(this, message, attributes));
+
+	    _this.min = parseInt(attributes['val-range-min']);
+	    _this.max = parseInt(attributes['val-range-max']);
+	    return _this;
+	  }
+
+	  _createClass(RangeValidator, [{
+	    key: 'isValid',
+	    value: function isValid(value) {
+	      var parsedValue = parseInt(value, 10) || -1;
+	      return !value || !isNaN(parsedValue) && parsedValue >= this.min && parsedValue <= this.max;
+	    }
+	  }]);
+
+	  return RangeValidator;
+	}(_basevalidator2.default);
+
+	module.exports = RangeValidator;
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _basevalidator = __webpack_require__(40);
+
+	var _basevalidator2 = _interopRequireDefault(_basevalidator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RegexValidator = function (_BaseValidator) {
+	  _inherits(RegexValidator, _BaseValidator);
+
+	  function RegexValidator(message, attributes) {
+	    _classCallCheck(this, RegexValidator);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(RegexValidator).call(this, message, attributes));
+
+	    _this.regex = new RegExp(attributes['val-regex-pattern']);
+	    return _this;
+	  }
+
+	  _createClass(RegexValidator, [{
+	    key: 'isValid',
+	    value: function isValid(value) {
+	      return !value || this.regex.test(value);
+	    }
+	  }]);
+
+	  return RegexValidator;
+	}(_basevalidator2.default);
+
+	module.exports = RegexValidator;
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _basevalidator = __webpack_require__(40);
+
+	var _basevalidator2 = _interopRequireDefault(_basevalidator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MinLengthValidator = function (_BaseValidator) {
+	  _inherits(MinLengthValidator, _BaseValidator);
+
+	  function MinLengthValidator(message, attributes) {
+	    _classCallCheck(this, MinLengthValidator);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MinLengthValidator).call(this, message, attributes));
+
+	    _this.minLength = attributes['val-minlength-min'];
+	    return _this;
+	  }
+
+	  _createClass(MinLengthValidator, [{
+	    key: 'isValid',
+	    value: function isValid(value) {
+	      return !value || value.length >= this.minLength;
+	    }
+	  }]);
+
+	  return MinLengthValidator;
+	}(_basevalidator2.default);
+
+	module.exports = MinLengthValidator;
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _basevalidator = __webpack_require__(40);
+
+	var _basevalidator2 = _interopRequireDefault(_basevalidator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MaxLengthValidator = function (_BaseValidator) {
+	  _inherits(MaxLengthValidator, _BaseValidator);
+
+	  function MaxLengthValidator(message, attributes) {
+	    _classCallCheck(this, MaxLengthValidator);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MaxLengthValidator).call(this, message, attributes));
+
+	    _this.maxLength = attributes['val-maxlength-max'];
+	    return _this;
+	  }
+
+	  _createClass(MaxLengthValidator, [{
+	    key: 'isValid',
+	    value: function isValid(value) {
+	      return !value || value.length <= this.maxLength;
+	    }
+	  }]);
+
+	  return MaxLengthValidator;
+	}(_basevalidator2.default);
+
+	module.exports = MaxLengthValidator;
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(42)
+	__vue_script__ = __webpack_require__(46)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
@@ -879,12 +1069,15 @@
 	})()}
 
 /***/ },
-/* 42 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = {
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
 	  name: 'vue-dotnet-validator-group',
 	  data: function data() {
 	    return {
@@ -892,6 +1085,7 @@
 	      loading: false
 	    };
 	  },
+
 	  methods: {
 	    validate: function validate(event) {
 	      var valid = true;

@@ -6,14 +6,53 @@
     <title>Vue dotnet validator example</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        label {
+            display: block;
+        }
+        label span {
+            display: inline-block;
+            width: 200px;
+        }
+        .message {
+            color: red;
+        }
+    </style>
 </head>
 <body id="example-site">
 
 <vue-dotnet-validator-group inline-template>
     <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
         <validator inline-template>
-            <span asp-validation-for="LastName" v-el:message></span>
-            <input type="text" asp-for="LastName" v-el:field v-model="value" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
+            <span asp-validation-for="LastName" v-el:message class="message"></span>
+            <label>
+                <span>Required validator</span>
+                <input type="text" asp-for="LastName" v-el:field v-model="value" data-val-required="This field is required" />
+            </label>
+        </validator>
+
+        <validator inline-template>
+            <span asp-validation-for="LastName" v-el:message class="message"></span>
+            <label>
+                <span>Maximum length validator</span>
+                <input type="text" asp-for="ShortName" v-el:field v-model="value" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
+            </label>
+        </validator>
+
+        <validator inline-template>
+            <span asp-validation-for="LastName" v-el:message class="message"></span>
+            <label>
+                <span>Range validator</span>
+                <input type="text" asp-for="RangeTest" v-el:field v-model="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>
+            </label>
+        </validator>
+
+        <validator inline-template>
+            <span asp-validation-for="LastName" v-el:message class="message"></span>
+            <label>
+                <span>Required range validator</span>
+                <input type="text" asp-for="RangeTest" v-el:field v-model="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>
+            </label>
         </validator>
         <button type="submit">Register</button>
     </form>
