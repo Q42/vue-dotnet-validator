@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["vueDotnetValidator"] = factory();
+	else
+		root["vueDotnetValidator"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -46,14 +56,20 @@
 
 	'use strict';
 
+	var _basevalidator = __webpack_require__(1);
+
+	var _basevalidator2 = _interopRequireDefault(_basevalidator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var validator = __webpack_require__(2);
 	var validatorGroup = __webpack_require__(45);
-	var baseValidator = __webpack_require__(1);
+
 
 	module.exports = {
 	    validatorGroup: validatorGroup,
 	    validator: validator,
-	    validatorBaseClass: baseValidator
+	    BaseValidator: _basevalidator2.default
 	};
 
 /***/ },
@@ -146,7 +162,7 @@
 
 	exports.default = {
 	  name: 'vue-dotnet-validator',
-	  allValidators: _validators2.default,
+	  validators: _validators2.default,
 	  props: {
 	    'value': {
 	      default: ''
@@ -159,7 +175,6 @@
 	    };
 	  },
 	  attached: function attached() {
-	    console.log('VALIDATORS: ', _validators2.default);
 	    if (!this.$els.field) {
 	      console.error('Field is missing!', this);
 	      return;
@@ -1120,4 +1135,6 @@
 	};
 
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;

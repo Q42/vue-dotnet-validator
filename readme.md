@@ -18,10 +18,10 @@ Using this library requires changes on two places in your application, JavaScrip
 ###JavaScript
 This registers the vue components so that vue.js knows what to activate. 
 ```
-import { validator, validatorGroup } from 'vue-dotnet-validator'
+var vueDotnetValidator from 'vue-dotnet-validator'
 
-Vue.component('vue-dotnet-validator', validator; 
-Vue.component('vue-dotnet-validator-group', validatorGroup; 
+Vue.component('vue-dotnet-validator', vueDotnetValidator.validator; 
+Vue.component('vue-dotnet-validator-group', vueDotnetValidator.validatorGroup; 
 
 ```
 
@@ -39,3 +39,21 @@ The following code should be added to your cshtml forms. This makes sure that th
     </form>
 </vue-dotnet-validator-group>
 ```
+
+
+##Creating custom validators
+It is possible to create your own validators, below is an example of a very simple custom validator.
+###JavaScript
+```
+var vueDotnetValidator from 'vue-dotnet-validator'
+
+class MyCustomValidator extends vueDotnetValidator.BaseValidator {
+    isValid(value) {
+        return !value || value == 'Hello';
+    }
+}
+vueDotnetValidator.validator.validators['mycustom'] = MyCustomValidator;
+```
+
+###Cshtml
+To use this custom validator in your own form, make sure your custom .NET data annotation outputs a `data-val-mycustom="MESSAGE"` attribute on your `<input>` DOM node.
