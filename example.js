@@ -1,17 +1,19 @@
-var validator = require('./src/validator.vue');
-var validatorGroup = require('./src/validator-group.vue');
-import BaseValidator from './src/validators/basevalidator';
+import dotnetValidator from './index';
 
-class CustomValidator extends BaseValidator {
+var customValidators = {};
+
+class CustomValidator extends dotnetValidator.BaseValidator {
     isValid(value) {
         return !value || value == 'Hello';
     }
 }
 
-validator.validators['mycustomvalidator'] = CustomValidator;
+customValidators.Customvalidator = CustomValidator;
 
-Vue.component('vue-dotnet-validator', validator);
-Vue.component('vue-dotnet-validator-group', validatorGroup);
+
+
+Vue.component('validator', dotnetValidator.validator(customValidators));
+Vue.component('validator-group', dotnetValidator.validatorGroup);
 
 new Vue({
     el: '#example-site'

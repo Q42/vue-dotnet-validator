@@ -1,6 +1,5 @@
-<script>
-  export default {
-    name: 'vue-dotnet-validator-group',
+<script lang="babel">
+  export default ({
     data() {
       return {
         validators: [],
@@ -12,13 +11,16 @@
         let valid = true;
         this.validators.forEach(validator => {
           if(!validator.isValid) {
-          valid = false;
-          event.preventDefault();
-        }
-        validator.blurField(); // Force showing validation.
-      });
+            valid = false;
+            event.preventDefault();
+          }
+          validator.blurField(); // Force showing validation.
+        });
         this.loading = valid;
         return false;
+      },
+      cancel() {
+        this.$dispatch('cancel-form');
       }
     },
     events: {
@@ -30,9 +32,6 @@
         this.validators.splice(this.validators.indexOf(validator), 1);
         return true; // bubble
       }
-    },
-    components: {
-      'validator': require('./validator.vue')
     }
-  }
+  });
 </script>

@@ -1,11 +1,16 @@
-<script>
-  import validators from './validators/validators';
+module.exports = (extraValidators = {}) => {
+  let validators = require('./default-validators');
+  // Add extraValidators to the default validators.
+  for (var attrname in extraValidators) { validators[attrname] = extraValidators[attrname]; }
 
-  export default {
-    name: 'vue-dotnet-validator',
-    validators: validators,
+  return {
     props: {
+      // Value is the value that will be validated
       'value': {
+        default: ''
+      },
+      // This parameter can be used to provide additional complex validation from your app
+      'extra-error-message': {
         default: ''
       }
     },
@@ -20,8 +25,8 @@
         console.error('Field is missing!', this);
         return;
       }
-      this.value = this.$els.field.value;
-      this.getValidators();
+
+      this.findValidators();
 
       if(this.$els.message.innerText) {
         // When we already have innerText, it means the server has output a validation error.
@@ -33,8 +38,7 @@
       this.$watch('validationMessage', this.showValidationMessage);
 
       this.$els.field.addEventListener('blur', this.blurField);
-    },
-    created() {
+      this.$els.field.addEventListener('change', this.changeField);
       this.$dispatch('validator-created', this);
     },
     beforeDestroy() {
@@ -44,33 +48,23 @@
       blurField() {
         this.blurred = true;
         this.showValidationMessage();
-        this.$dispatch('blur');
+        this.$dispatch('blur-field', this);
+      },
+      changeField() {
+        this.$dispatch('change-field', this);
       },
       // Initializes custom validators by looking at the attributes in the DOM.
-      getValidators() {
-        let dataAttributes = this.getDataAttributes();
+      findValidators() {
+        let dataAttributes = this.$els.field.dataset;
         let validatorKeys = Object.keys(validators);
         validatorKeys.forEach(validatorKey => {
-          let validationMessage = dataAttributes['val-' + validatorKey];
-        if(!validationMessage) {
-          // Validator should not be activated
-          return;
-        }
-        this.validators.push(new validators[validatorKey](validationMessage, dataAttributes));
-      });
-      },
-      getDataAttributes() {
-        let dataset = {};
-        let element = this.$els.field;
-        for(let i=0; i < element.attributes.length; i++) {
-          let name = element.attributes[i].name;
-          if(name.indexOf('data-') !== 0) {
-            continue;
+          let validationMessage = dataAttributes['val' + validatorKey];
+          if(!validationMessage) {
+            // Validator should not be activated
+            return;
           }
-          name = name.replace('data-', '');
-          dataset[name] = element.attributes[i].value;
-        }
-        return dataset;
+          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes));
+        });
       },
       showValidationMessage() {
         if(!this.blurred) {
@@ -83,20 +77,20 @@
     computed: {
       isValid() {
         return this.validators.filter(validator => {
-                  return validator.isValid(this.value);
-      }).length === this.validators.length;
+            return validator.isValid(this.value);
+          }).length === this.validators.length && !this.extraErrorMessage;
       },
       // Returns the error-message
       validationMessage() {
         let message = '';
         this.validators.forEach(validator => {
           const valid = validator.isValid(this.value);
-        if(!valid && !message) {
-          message = validator.getMessage();
-        }
-      });
-        return message;
+          if(!valid && !message) {
+            message = validator.getMessage();
+          }
+        });
+        return message || this.extraErrorMessage;
       }
     }
   }
-</script>
+}

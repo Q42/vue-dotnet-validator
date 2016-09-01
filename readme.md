@@ -16,12 +16,12 @@ Warning: This plugin is not yet live!
 Using this library requires changes on two places in your application, JavaScript and your razor cshtml templates.
 
 ###JavaScript
-This registers the vue components so that vue.js knows what to activate. 
+This registers the vue components so that vue.js knows what to activate.
+Base usage:
 ```JavaScript
-var vueDotnetValidator from 'vue-dotnet-validator'
-
-Vue.component('vue-dotnet-validator', vueDotnetValidator.validator; 
-Vue.component('vue-dotnet-validator-group', vueDotnetValidator.validatorGroup; 
+import dotnetValidator from './index';
+Vue.component('validator-group', require('vue-dotnet-validator/validator-group.vue'));
+Vue.component('validator', require('vue-dotnet-validator/validator.js')());
 
 ```
 
@@ -29,7 +29,7 @@ Vue.component('vue-dotnet-validator-group', vueDotnetValidator.validatorGroup;
 ###Cshtml
 The following code should be added to your cshtml forms. This makes sure that the validator logic is activated and adds the required references to DOM-nodes.
 ```HTML
-<vue-dotnet-validator-group inline-template>
+<validator-group inline-template>
     <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
         <validator inline-template>
            <span asp-validation-for="LastName" v-el:message></span>
@@ -37,7 +37,7 @@ The following code should be added to your cshtml forms. This makes sure that th
         </validator>
         <button type="submit">Register</button>
     </form>
-</vue-dotnet-validator-group>
+</validator-group>
 ```
 
 
@@ -45,15 +45,23 @@ The following code should be added to your cshtml forms. This makes sure that th
 It is possible to create your own validators, below is an example of a very simple custom validator.
 ###JavaScript
 ```JavaScript
-var vueDotnetValidator from 'vue-dotnet-validator'
 
 class MyCustomValidator extends vueDotnetValidator.BaseValidator {
     isValid(value) {
         return !value || value == 'Hello';
     }
 }
-vueDotnetValidator.validator.validators['mycustom'] = MyCustomValidator;
+let validators = {
+  Mycustomvalidator: MyCustomValidator
+};
+
+Vue.component('validator', require('vue-dotnet-validator/validator.js')(validators));
+
 ```
 
 ###Cshtml
 To use this custom validator in your own form, make sure your custom .NET data annotation outputs a `data-val-mycustom="MESSAGE"` attribute on your `<input>` DOM node.
+
+##Custom validators with additional parameters
+You can extend the features of your custom validators using additional data-attributes on your `<input>` tag. This is a feature supported in .NET.
+For an example on the usage of this feature, see `regexvalidator.js`.
