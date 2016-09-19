@@ -94,7 +94,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	customValidators.Customvalidator = CustomValidator;
 
 	Vue.component('validator', _index2.default.validator(customValidators));
-	Vue.component('validator-group', _index2.default.validatorGroup);
+	Vue.component('vue-dotnet-validator-group', _index2.default.validatorGroup);
 
 	new Vue({
 	    el: '#example-site'
@@ -169,9 +169,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var _validatorGroup2 = _interopRequireDefault(_validatorGroup);
 
-				var _basevalidator = __webpack_require__(!function webpackMissingModule() {
-					var e = new Error("Cannot find module \"./src/basevalidator\"");e.code = 'MODULE_NOT_FOUND';throw e;
-				}());
+				var _basevalidator = __webpack_require__(6);
 
 				var _basevalidator2 = _interopRequireDefault(_basevalidator);
 

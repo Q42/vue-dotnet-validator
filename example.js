@@ -13,7 +13,7 @@ customValidators.Customvalidator = CustomValidator;
 
 
 Vue.component('validator', dotnetValidator.validator(customValidators));
-Vue.component('validator-group', dotnetValidator.validatorGroup);
+Vue.component('vue-dotnet-validator-group', dotnetValidator.validatorGroup);
 
 new Vue({
     el: '#example-site'
