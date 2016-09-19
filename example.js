@@ -1,4 +1,4 @@
-import dotnetValidator from './index';
+import dotnetValidator from './dist/index';
 
 var customValidators = {};
 

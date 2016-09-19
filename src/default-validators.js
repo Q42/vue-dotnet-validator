@@ -1,8 +1,8 @@
 module.exports = {
-  Required: require('./requiredvalidator'),
-  Minlength: require('./minlengthvalidator'),
-  Maxlength: require('./maxlengthvalidator'),
-  Length: require('./stringlengthvalidator'),
-  Range: require('./rangevalidator'),
-  Regex: require('./regexvalidator')
+  Required: require('./validators/requiredvalidator.js'),
+  Minlength: require('./validators/minlengthvalidator.js'),
+  Maxlength: require('./validators/maxlengthvalidator.js'),
+  Length: require('./validators/stringlengthvalidator.js'),
+  Range: require('./validators/rangevalidator.js'),
+  Regex: require('./validators/regexvalidator.js')
 };

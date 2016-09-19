@@ -19,9 +19,9 @@ Using this library requires changes on two places in your application, JavaScrip
 This registers the vue components so that vue.js knows what to activate.
 Base usage:
 ```JavaScript
-import dotnetValidator from './index';
-Vue.component('validator-group', require('vue-dotnet-validator/validator-group.vue'));
-Vue.component('validator', require('vue-dotnet-validator/validator.js')());
+import dotnetValidator from './dotnet-validator/dotnet-validator';
+Vue.component('validator-group', dotnetValidator.validatorGroup);
+Vue.component('validator', dotnetValidator.validator());
 
 ```
 
@@ -55,7 +55,7 @@ let validators = {
   Mycustomvalidator: MyCustomValidator
 };
 
-Vue.component('validator', require('vue-dotnet-validator/validator.js')(validators));
+Vue.component('validator', dotnetValidator.validator(validators));
 
 ```
 

@@ -1,6 +1,6 @@
-var validator = require('./src/validator.js');
-var validatorGroup = require('./src/validator-group.vue');
-import baseValidator from './src/basevalidator';
+import validator from './src/validator.js';
+import validatorGroup from './src/validator-group.js';
+import baseValidator from './src/validators/basevalidator.js';
 
 module.exports = {
     validatorGroup: validatorGroup,
