@@ -7,8 +7,7 @@ The idea is that you use this on your server rendered HTML forms which include t
 
 
 ##Installation
-Warning: This plugin is not yet live!
-`npm install --save vue-dotnet-validator`
+`npm install vue-dotnet-validator`
 
 
 ##Usage
