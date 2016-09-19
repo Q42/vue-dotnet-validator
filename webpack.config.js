@@ -1,3 +1,5 @@
+var webpack = require("webpack");
+
 module.exports = {
     entry: {
         'index': './index.js',
@@ -13,5 +15,8 @@ module.exports = {
         loaders: [
             { test: /\.(babel|js)$/, loader: 'babel' },
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
+    ]
 };
