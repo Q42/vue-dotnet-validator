@@ -1,4 +1,4 @@
-import MinLengthValidator from '../tools/dotnet-validator/minlengthvalidator';
+import MinLengthValidator from './minlengthvalidator.js';
 
 describe('Minimum length validator', () => {
 

@@ -1,4 +1,4 @@
-import RequiredValidator from '../tools/dotnet-validator/requiredvalidator';
+import RequiredValidator from './requiredvalidator.js';
 
 describe('Required validator', () => {
 

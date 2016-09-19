@@ -1,4 +1,4 @@
-import BaseValidator from './basevalidator';
+import BaseValidator from './basevalidator.js';
 
 class RequiredValidator extends BaseValidator {
   isValid(value) {

@@ -1,4 +1,4 @@
-import StringLengthValidator from '../tools/dotnet-validator/stringlengthvalidator';
+import StringLengthValidator from './stringlengthvalidator.js';
 
 describe('String length validator', () => {
 

@@ -1,4 +1,4 @@
-import RegexValidator from '../tools/dotnet-validator/regexvalidator';
+import RegexValidator from './regexvalidator.js';
 
 describe('Regex validator', () => {
 

@@ -1,4 +1,4 @@
-import RangeValidator from '../tools/dotnet-validator/rangevalidator';
+import RangeValidator from './rangevalidator.js';
 
 describe('Range validator', () => {
 

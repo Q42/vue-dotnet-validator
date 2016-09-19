@@ -1,4 +1,4 @@
-import MaxlengthValidator from '../tools/dotnet-validator/maxlengthvalidator';
+import MaxlengthValidator from './maxlengthvalidator.js';
 
 describe('Maximum length validator', () => {
 
