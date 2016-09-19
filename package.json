@@ -2,7 +2,14 @@
   "name": "vue-dotnet-validator",
   "version": "0.2.0",
   "main": "dist/index.js",
-  "author": "tdekoning",
+  "author": {
+    "name": "Ted de Koning",
+    "email": "ted@q42.nl",
+    "url": "http://q42.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Q42/vue-dotnet-validator",
+  "repository": "Q42/vue-dotnet-validator",
   "scripts": {
     "build": "npm install && npm run test && webpack",
     "test": "karma start"
