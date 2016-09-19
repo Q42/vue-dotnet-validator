@@ -93,6 +93,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    validators[attrname] = extraValidators[attrname];
 	  }
 
+	  var validClass = 'field-validation-valid';
+
 	  return {
 	    props: {
 	      // Value is the value that will be validated
@@ -117,11 +119,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      this.findValidators();
+	      this.addAriaDescribedBy();
 
 	      if (this.$els.message.innerText) {
 	        // When we already have innerText, it means the server has output a validation error.
 	        // We need to replace that validation message as soon as the user changes the value of the input
 	        this.blurred = true;
+	      } else {
+	        this.$els.message.classList.add(validClass);
 	      }
 
 	      // Make sure we update the validation message as soon as it changes.
@@ -157,7 +162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Validator should not be activated
 	            return;
 	          }
-	          _this.validators.push(new validators[validatorKey](validationMessage, dataAttributes));
+	          _this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, _this.$els.field));
 	        });
 	      },
 	      showValidationMessage: function showValidationMessage() {
@@ -166,6 +171,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return;
 	        }
 	        this.$els.message.innerHTML = this.validationMessage;
+	        if (this.validationMessage) {
+	          return this.$els.message.classList.remove(validClass);
+	        }
+	        return this.$els.message.classList.add(validClass);
+	      },
+	      addAriaDescribedBy: function addAriaDescribedBy() {
+	        // Make kind of sure that the id does not exist yet.
+	        // No need to force this kind of stuff, in almost any case this will be enough.
+	        var id = 'vue-validator-' + parseInt(Math.random() * 100) + '-' + this._uid;
+	        this.$els.message.id = id;
+	        this.$els.field.setAttribute('aria-describedby', id);
 	      }
 	    },
 	    computed: {
@@ -189,6 +205,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	        });
 	        return message || this.extraErrorMessage;
+	      }
+	    },
+	    watch: {
+	      isValid: function isValid() {
+	        this.$els.field.setAttribute('aria-invalid', !this.isValid);
 	      }
 	    }
 	  };
