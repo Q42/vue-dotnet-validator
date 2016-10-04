@@ -22,32 +22,36 @@ module.exports = (extraValidators = {}) => {
         blurred: false
       };
     },
-    attached() {
-      if(!this.$els.field) {
-        console.error('Field is missing!', this);
-        return;
-      }
+    mounted() {
+      this.$nextTick(() => {
+        if(!this.$refs.field) {
+          console.error('Field is missing!', this);
+          return;
+        }
 
-      this.findValidators();
-      this.addAriaDescribedBy();
+        this.findValidators();
+        this.addAriaDescribedBy();
 
-      if(this.$els.message.innerText) {
-        // When we already have innerText, it means the server has output a validation error.
-        // We need to replace that validation message as soon as the user changes the value of the input
-        this.blurred = true;
-      } else {
-        this.$els.message.classList.add(validClass);
-      }
+        if(this.$refs.message.innerText) {
+          // When we already have innerText, it means the server has output a validation error.
+          // We need to replace that validation message as soon as the user changes the value of the input
+          this.blurred = true;
+        } else {
+          this.$refs.message.classList.add(validClass);
+        }
 
-      // Make sure we update the validation message as soon as it changes.
-      this.$watch('validationMessage', this.showValidationMessage);
+        // Make sure we update the validation message as soon as it changes.
+        this.$watch('validationMessage', this.showValidationMessage);
 
-      this.$els.field.addEventListener('blur', this.blurField);
-      this.$els.field.addEventListener('change', this.changeField);
-      this.$dispatch('validator-created', this);
+        this.$refs.field.addEventListener('blur', this.blurField);
+        this.$refs.field.addEventListener('change', this.changeField);
+        this.$dispatch('validator-created', this);
+      });
     },
-    beforeDestroy() {
-      this.$dispatch('validator-removed', this);
+    destroyed() {
+      this.$nextTick(() => {
+        this.$dispatch('validator-removed', this);
+      });
     },
     methods: {
       blurField() {
@@ -60,7 +64,7 @@ module.exports = (extraValidators = {}) => {
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
-        let dataAttributes = this.$els.field.dataset;
+        let dataAttributes = this.$refs.field.dataset;
         let validatorKeys = Object.keys(validators);
         validatorKeys.forEach(validatorKey => {
           let validationMessage = dataAttributes['val' + validatorKey];
@@ -68,7 +72,7 @@ module.exports = (extraValidators = {}) => {
             // Validator should not be activated
             return;
           }
-          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, this.$els.field));
+          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, this.$refs.field));
         });
       },
       showValidationMessage() {
@@ -76,18 +80,18 @@ module.exports = (extraValidators = {}) => {
           // Only show validation after blur.
           return;
         }
-        this.$els.message.innerHTML = this.validationMessage;
+        this.$refs.message.innerHTML = this.validationMessage;
         if(this.validationMessage) {
-          return this.$els.message.classList.remove(validClass);
+          return this.$refs.message.classList.remove(validClass);
         }
-        return this.$els.message.classList.add(validClass);
+        return this.$refs.message.classList.add(validClass);
       },
       addAriaDescribedBy() {
         // Make kind of sure that the id does not exist yet.
         // No need to force this kind of stuff, in almost any case this will be enough.
         const id = `vue-validator-${parseInt(Math.random()*100)}-${this._uid}`;
-        this.$els.message.id = id;
-        this.$els.field.setAttribute('aria-describedby', id);
+        this.$refs.message.id = id;
+        this.$refs.field.setAttribute('aria-describedby', id);
       }
     },
     computed: {
@@ -110,7 +114,7 @@ module.exports = (extraValidators = {}) => {
     },
     watch: {
       isValid() {
-        this.$els.field.setAttribute('aria-invalid', !this.isValid);
+        this.$refs.field.setAttribute('aria-invalid', !this.isValid);
       }
     }
   }
