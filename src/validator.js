@@ -21,7 +21,8 @@ module.exports = (extraValidators = {}) => {
     data() {
       return {
         validators: [],
-        blurred: false
+        blurred: false,
+        localInputValue: ''
       };
     },
     mounted() {
@@ -47,6 +48,7 @@ module.exports = (extraValidators = {}) => {
 
         this.$refs.field.addEventListener('blur', this.blurField);
         this.$refs.field.addEventListener('change', this.changeField);
+        this.$refs.field.addEventListener('input', this.changeField);
         pubSub.publish(pubSub.eventTypes.validatorCreated, this);
       });
     },
@@ -57,14 +59,14 @@ module.exports = (extraValidators = {}) => {
     },
     methods: {
       blurField() {
-        this.value = event.target.value;
+        this.localValue = event.target.value;
         this.$emit('input', event.target.value);
         this.blurred = true;
         this.showValidationMessage();
         pubSub.publish(pubSub.eventTypes.blur, this);
       },
       changeField(event) {
-        this.value = event.target.value;
+        this.localValue = event.target.value;
         this.$emit('input', event.target.value);
         pubSub.publish(pubSub.eventTypes.change, this);
         this.showValidationMessage();
@@ -104,19 +106,27 @@ module.exports = (extraValidators = {}) => {
     computed: {
       isValid() {
         return this.validators.filter(validator => {
-            return validator.isValid(this.value);
+            return validator.isValid(this.localValue);
           }).length === this.validators.length && !this.extraErrorMessage;
       },
       // Returns the error-message
       validationMessage() {
         let message = '';
         this.validators.forEach(validator => {
-          const valid = validator.isValid(this.value);
+          const valid = validator.isValid(this.localValue);
           if(!valid && !message) {
             message = validator.getMessage();
           }
         });
         return message || this.extraErrorMessage;
+      },
+      localValue: {
+        get() {
+          return this.value || this.localInputValue;
+        },
+        set(value) {
+          this.localInputValue = value;
+        }
       }
     },
     watch: {
