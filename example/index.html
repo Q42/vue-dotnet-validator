@@ -19,55 +19,56 @@
         }
     </style>
 </head>
-<body id="example-site">
+<body>
+<div id="example-site">
+    <vue-dotnet-validator-group inline-template>
+        <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
+            <validator inline-template>
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Required validator</span>
+                    <input type="text" asp-for="LastName" ref="field" :value="value" data-val-required="This field is required" />
+                </label>
+            </validator>
 
-<vue-dotnet-validator-group inline-template>
-    <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
-        <validator inline-template>
-            <span asp-validation-for="LastName" ref:message class="message"></span>
-            <label>
-                <span>Required validator</span>
-                <input type="text" asp-for="LastName" ref:field v-model="value" data-val-required="This field is required" />
-            </label>
-        </validator>
+            <validator inline-template>
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Maximum length validator</span>
+                    <input type="text" asp-for="ShortName" ref="field" :value="value" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
+                </label>
+            </validator>
 
-        <validator inline-template>
-            <span asp-validation-for="LastName" ref:message class="message"></span>
-            <label>
-                <span>Maximum length validator</span>
-                <input type="text" asp-for="ShortName" ref:field v-model="value" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
-            </label>
-        </validator>
+            <validator inline-template>
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Range validator</span>
+                    <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>
+                </label>
+            </validator>
 
-        <validator inline-template>
-            <span asp-validation-for="LastName" ref:message class="message"></span>
-            <label>
-                <span>Range validator</span>
-                <input type="text" asp-for="RangeTest" ref:field v-model="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>
-            </label>
-        </validator>
-
-        <validator inline-template>
-            <span asp-validation-for="LastName" ref:message class="message"></span>
-            <label>
-                <span>Required range validator</span>
-                <input type="text" asp-for="RangeTest" ref:field v-model="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>
-            </label>
-        </validator>
+            <validator inline-template>
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Required range validator</span>
+                    <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>
+                </label>
+            </validator>
 
 
-        <validator inline-template>
-            <span asp-validation-for="LastName" ref:message class="message"></span>
-            <label>
-                <span>Custom validator</span>
-                <input type="text" asp-for="RangeTest" ref:field v-model="value" data-val-mycustomvalidator="Value should be 'Hello'"/>
-            </label>
-        </validator>
-        <button type="submit">Register</button>
-    </form>
-</vue-dotnet-validator-group>
+            <validator inline-template>
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Custom validator</span>
+                    <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-mycustomvalidator="Value should be 'Hello'"/>
+                </label>
+            </validator>
+            <button type="submit">Register</button>
+        </form>
+    </vue-dotnet-validator-group>
+</div>
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.js"></script>
 <script src="../dist/example.js"></script>
 </body>
 </html>

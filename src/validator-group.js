@@ -1,3 +1,5 @@
+import pubSub from './pubsub';
+
 module.exports = {
     props: {
         onValid: {
@@ -10,6 +12,14 @@ module.exports = {
             validators: [],
             loading: false
         }
+    },
+    mounted() {
+        pubSub.subscribe(pubSub.eventTypes.validatorCreated, validator => {
+            this.validators.push(validator);
+        });
+        pubSub.subscribe(pubSub.eventTypes.validatorRemoved, validator => {
+            this.validators.splice(this.validators.indexOf(validator), 1);
+        });
     },
     methods: {
         validate(event) {
@@ -28,19 +38,6 @@ module.exports = {
 
             this.loading = valid;
             return false;
-        },
-        cancel() {
-            this.$dispatch('cancel-form');
-        }
-    },
-    events: {
-        'validator-created'(validator) {
-            this.validators.push(validator);
-            return true; // bubble
-        },
-        'validator-removed'(validator) {
-            this.validators.splice(this.validators.indexOf(validator), 1);
-            return true; // bubble
         }
     }
 };

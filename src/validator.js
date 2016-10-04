@@ -1,3 +1,5 @@
+import pubSub from './pubsub';
+
 module.exports = (extraValidators = {}) => {
   let validators = require('./default-validators');
   // Add extraValidators to the default validators.
@@ -45,22 +47,27 @@ module.exports = (extraValidators = {}) => {
 
         this.$refs.field.addEventListener('blur', this.blurField);
         this.$refs.field.addEventListener('change', this.changeField);
-        this.$dispatch('validator-created', this);
+        pubSub.publish(pubSub.eventTypes.validatorCreated, this);
       });
     },
     destroyed() {
       this.$nextTick(() => {
-        this.$dispatch('validator-removed', this);
+        pubSub.publish(pubSub.eventTypes.validatorRemoved, this);
       });
     },
     methods: {
       blurField() {
+        this.value = event.target.value;
+        this.$emit('input', event.target.value);
         this.blurred = true;
         this.showValidationMessage();
-        this.$dispatch('blur-field', this);
+        pubSub.publish(pubSub.eventTypes.blur, this);
       },
-      changeField() {
-        this.$dispatch('change-field', this);
+      changeField(event) {
+        this.value = event.target.value;
+        this.$emit('input', event.target.value);
+        pubSub.publish(pubSub.eventTypes.change, this);
+        this.showValidationMessage();
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
