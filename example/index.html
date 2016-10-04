@@ -63,6 +63,17 @@
                     <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-mycustomvalidator="Value should be 'Hello'"/>
                 </label>
             </validator>
+
+
+            <test-component inline-template>
+                <validator v-model="inputValue" inline-template>
+                    <label>
+                        <span asp-validation-for="LastName" ref="message" class="message"></span>
+                        <span>Custom component container validator</span>
+                        <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-mycustomvalidator="Value should be 'Hello'"/>
+                    </label>
+                </validator>
+            </test-component>
             <button type="submit">Register</button>
         </form>
     </vue-dotnet-validator-group>
