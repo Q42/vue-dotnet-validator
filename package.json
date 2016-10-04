@@ -12,7 +12,8 @@
   "repository": "Q42/vue-dotnet-validator",
   "scripts": {
     "build": "npm install && npm run test && webpack",
-    "test": "karma start"
+    "test": "karma start",
+    "watch": "webpack --watch"
   },
   "devDependencies": {
     "babel-core": "^6.8.0",

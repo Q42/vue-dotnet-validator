@@ -1,3 +1,5 @@
+import pubSub from './pubsub';
+
 module.exports = (extraValidators = {}) => {
   let validators = require('./default-validators');
   // Add extraValidators to the default validators.
@@ -19,48 +21,59 @@ module.exports = (extraValidators = {}) => {
     data() {
       return {
         validators: [],
-        blurred: false
+        blurred: false,
+        localInputValue: ''
       };
     },
-    attached() {
-      if(!this.$els.field) {
-        console.error('Field is missing!', this);
-        return;
-      }
+    mounted() {
+      this.$nextTick(() => {
+        if(!this.$refs.field) {
+          console.error('Field is missing!', this);
+          return;
+        }
 
-      this.findValidators();
-      this.addAriaDescribedBy();
+        this.findValidators();
+        this.addAriaDescribedBy();
 
-      if(this.$els.message.innerText) {
-        // When we already have innerText, it means the server has output a validation error.
-        // We need to replace that validation message as soon as the user changes the value of the input
-        this.blurred = true;
-      } else {
-        this.$els.message.classList.add(validClass);
-      }
+        if(this.$refs.message.innerText) {
+          // When we already have innerText, it means the server has output a validation error.
+          // We need to replace that validation message as soon as the user changes the value of the input
+          this.blurred = true;
+        } else {
+          this.$refs.message.classList.add(validClass);
+        }
 
-      // Make sure we update the validation message as soon as it changes.
-      this.$watch('validationMessage', this.showValidationMessage);
+        // Make sure we update the validation message as soon as it changes.
+        this.$watch('validationMessage', this.showValidationMessage);
 
-      this.$els.field.addEventListener('blur', this.blurField);
-      this.$els.field.addEventListener('change', this.changeField);
-      this.$dispatch('validator-created', this);
+        this.$refs.field.addEventListener('blur', this.blurField);
+        this.$refs.field.addEventListener('change', this.changeField);
+        this.$refs.field.addEventListener('input', this.changeField);
+        pubSub.publish(pubSub.eventTypes.validatorCreated, this);
+      });
     },
-    beforeDestroy() {
-      this.$dispatch('validator-removed', this);
+    destroyed() {
+      this.$nextTick(() => {
+        pubSub.publish(pubSub.eventTypes.validatorRemoved, this);
+      });
     },
     methods: {
       blurField() {
+        this.localValue = event.target.value;
+        this.$emit('input', event.target.value);
         this.blurred = true;
         this.showValidationMessage();
-        this.$dispatch('blur-field', this);
+        pubSub.publish(pubSub.eventTypes.blur, this);
       },
-      changeField() {
-        this.$dispatch('change-field', this);
+      changeField(event) {
+        this.localValue = event.target.value;
+        this.$emit('input', event.target.value);
+        pubSub.publish(pubSub.eventTypes.change, this);
+        this.showValidationMessage();
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
-        let dataAttributes = this.$els.field.dataset;
+        let dataAttributes = this.$refs.field.dataset;
         let validatorKeys = Object.keys(validators);
         validatorKeys.forEach(validatorKey => {
           let validationMessage = dataAttributes['val' + validatorKey];
@@ -68,7 +81,7 @@ module.exports = (extraValidators = {}) => {
             // Validator should not be activated
             return;
           }
-          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, this.$els.field));
+          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, this.$refs.field));
         });
       },
       showValidationMessage() {
@@ -76,41 +89,49 @@ module.exports = (extraValidators = {}) => {
           // Only show validation after blur.
           return;
         }
-        this.$els.message.innerHTML = this.validationMessage;
+        this.$refs.message.innerHTML = this.validationMessage;
         if(this.validationMessage) {
-          return this.$els.message.classList.remove(validClass);
+          return this.$refs.message.classList.remove(validClass);
         }
-        return this.$els.message.classList.add(validClass);
+        return this.$refs.message.classList.add(validClass);
       },
       addAriaDescribedBy() {
         // Make kind of sure that the id does not exist yet.
         // No need to force this kind of stuff, in almost any case this will be enough.
         const id = `vue-validator-${parseInt(Math.random()*100)}-${this._uid}`;
-        this.$els.message.id = id;
-        this.$els.field.setAttribute('aria-describedby', id);
+        this.$refs.message.id = id;
+        this.$refs.field.setAttribute('aria-describedby', id);
       }
     },
     computed: {
       isValid() {
         return this.validators.filter(validator => {
-            return validator.isValid(this.value);
+            return validator.isValid(this.localValue);
           }).length === this.validators.length && !this.extraErrorMessage;
       },
       // Returns the error-message
       validationMessage() {
         let message = '';
         this.validators.forEach(validator => {
-          const valid = validator.isValid(this.value);
+          const valid = validator.isValid(this.localValue);
           if(!valid && !message) {
             message = validator.getMessage();
           }
         });
         return message || this.extraErrorMessage;
+      },
+      localValue: {
+        get() {
+          return this.value || this.localInputValue;
+        },
+        set(value) {
+          this.localInputValue = value;
+        }
       }
     },
     watch: {
       isValid() {
-        this.$els.field.setAttribute('aria-invalid', !this.isValid);
+        this.$refs.field.setAttribute('aria-invalid', !this.isValid);
       }
     }
   }

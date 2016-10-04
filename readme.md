@@ -31,8 +31,8 @@ The following code should be added to your cshtml forms. This makes sure that th
 <validator-group inline-template>
     <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
         <validator inline-template>
-           <span asp-validation-for="LastName" v-el:message></span>
-           <input type="text" asp-for="LastName" v-el:field v-model="value" />
+           <span asp-validation-for="LastName" ref:message></span>
+           <input type="text" asp-for="LastName" ref:field v-model="value" />
         </validator>
         <button type="submit">Register</button>
     </form>
