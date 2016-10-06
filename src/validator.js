@@ -1,4 +1,4 @@
-import pubSub from './pubsub';
+import util from './util';
 
 module.exports = (extraValidators = {}) => {
   let validators = require('./default-validators');
@@ -6,6 +6,7 @@ module.exports = (extraValidators = {}) => {
   for (var attrname in extraValidators) { validators[attrname] = extraValidators[attrname]; }
 
   const validClass = 'field-validation-valid';
+  let validatorGroup = null;
 
   return {
     props: {
@@ -32,6 +33,8 @@ module.exports = (extraValidators = {}) => {
           return;
         }
 
+        validatorGroup = util.findValidatorGroup(this);
+
         this.findValidators();
         this.addAriaDescribedBy();
 
@@ -49,26 +52,28 @@ module.exports = (extraValidators = {}) => {
         this.$refs.field.addEventListener('blur', this.blurField);
         this.$refs.field.addEventListener('change', this.changeField);
         this.$refs.field.addEventListener('input', this.changeField);
-        pubSub.publish(pubSub.eventTypes.validatorCreated, this);
+        validatorGroup.addValidator(this);
       });
     },
     destroyed() {
       this.$nextTick(() => {
-        pubSub.publish(pubSub.eventTypes.validatorRemoved, this);
+        validatorGroup.removeValidator(this);
       });
     },
     methods: {
-      blurField() {
-        this.localValue = event.target.value;
-        this.$emit('input', event.target.value);
+      blurField(event) {
+        if(event) {
+          this.localValue = event.target.value;
+          this.$emit('input', event.target.value);
+        }
         this.blurred = true;
         this.showValidationMessage();
-        pubSub.publish(pubSub.eventTypes.blur, this);
+        this.$emit('blur-field', this);
       },
       changeField(event) {
         this.localValue = event.target.value;
         this.$emit('input', event.target.value);
-        pubSub.publish(pubSub.eventTypes.change, this);
+        this.$emit('change-field', this);
         this.showValidationMessage();
       },
       // Initializes custom validators by looking at the attributes in the DOM.

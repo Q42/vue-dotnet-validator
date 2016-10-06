@@ -1,6 +1,5 @@
-import pubSub from './pubsub';
-
 module.exports = {
+    name: 'vue-dotnet-validator-group',
     props: {
         onValid: {
             type: Function,
@@ -10,16 +9,9 @@ module.exports = {
     data() {
         return {
             validators: [],
-            loading: false
+            loading: false,
+            isValidatorGroup: true,
         }
-    },
-    mounted() {
-        pubSub.subscribe(pubSub.eventTypes.validatorCreated, validator => {
-            this.validators.push(validator);
-        });
-        pubSub.subscribe(pubSub.eventTypes.validatorRemoved, validator => {
-            this.validators.splice(this.validators.indexOf(validator), 1);
-        });
     },
     methods: {
         validate(event) {
@@ -28,8 +20,8 @@ module.exports = {
                 if(!validator.isValid) {
                     valid = false;
                     event.preventDefault();
+                    validator.blurField(); // Force showing validation.
                 }
-                validator.blurField(); // Force showing validation.
             });
             if(valid && this.onValid instanceof Function) {
                 event.preventDefault();
@@ -38,6 +30,12 @@ module.exports = {
 
             this.loading = valid;
             return false;
+        },
+        addValidator(validator) {
+            this.validators.push(validator);
+        },
+        removeValidator(validator) {
+            this.validators.splice(this.validators.indexOf(validator), 1);
         }
     }
 };
