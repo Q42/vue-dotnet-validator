@@ -32,9 +32,9 @@ The following code should be added to your cshtml forms. This makes sure that th
 ```HTML
 <validator-group inline-template>
     <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
-        <validator inline-template>
+        <validator value="@Model.LastName" inline-template>
            <span asp-validation-for="LastName" ref="message"></span>
-           <input type="text" asp-for="LastName" ref="field" v-model="value" />
+           <input type="text" asp-for="LastName" ref="field" v-model="val" />
         </validator>
         <button type="submit">Register</button>
     </form>

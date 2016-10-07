@@ -27,7 +27,7 @@
                 <label>
                     <span asp-validation-for="LastName" ref="message" class="message"></span>
                     <span>Required validator</span>
-                    <input type="text" asp-for="LastName" ref="field" :value="value" data-val-required="This field is required" />
+                    <input type="text" asp-for="LastName" ref="field" :value="val" data-val-required="This field is required" />
                 </label>
             </validator>
 
@@ -35,7 +35,7 @@
                 <label>
                     <span asp-validation-for="LastName" ref="message" class="message"></span>
                     <span>Maximum length validator</span>
-                    <input type="text" asp-for="ShortName" ref="field" :value="value" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
+                    <input type="text" asp-for="ShortName" ref="field" :value="val" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
                 </label>
             </validator>
 
@@ -43,7 +43,7 @@
                 <label>
                     <span asp-validation-for="LastName" ref="message" class="message"></span>
                     <span>Range validator</span>
-                    <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>
+                    <input type="text" asp-for="RangeTest" ref="field" :value="val" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>
                 </label>
             </validator>
 
@@ -51,16 +51,16 @@
                 <label>
                     <span asp-validation-for="LastName" ref="message" class="message"></span>
                     <span>Required range validator</span>
-                    <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>
+                    <input type="text" asp-for="RangeTest" ref="field" :value="val" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>
                 </label>
             </validator>
 
 
-            <validator inline-template>
+            <validator value="Predefined value" inline-template>
                 <label>
                     <span asp-validation-for="LastName" ref="message" class="message"></span>
                     <span>Custom validator</span>
-                    <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-mycustomvalidator="Value should be 'Hello'"/>
+                    <input type="text" asp-for="RangeTest" ref="field" :value="val" data-val-mycustomvalidator="Value should be 'Hello'"/>
                 </label>
             </validator>
 
@@ -70,7 +70,7 @@
                     <label>
                         <span asp-validation-for="LastName" ref="message" class="message"></span>
                         <span>Custom component container validator</span>
-                        <input type="text" asp-for="RangeTest" ref="field" :value="value" data-val-mycustomvalidator="Value should be 'Hello'"/>
+                        <input type="text" asp-for="RangeTest" ref="field" :value="val" data-val-mycustomvalidator="Value should be 'Hello'"/>
                     </label>
                 </validator>
             </test-component>

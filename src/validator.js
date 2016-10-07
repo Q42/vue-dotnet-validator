@@ -11,7 +11,7 @@ module.exports = (extraValidators = {}) => {
   return {
     props: {
       // Value is the value that will be validated
-      'value': {
+      value: {
         default: ''
       },
       // This parameter can be used to provide additional complex validation from your app
@@ -23,7 +23,8 @@ module.exports = (extraValidators = {}) => {
       return {
         validators: [],
         blurred: false,
-        localInputValue: ''
+        localInputValue: this.value,
+        isTwoWayBind: false
       };
     },
     mounted() {
@@ -32,6 +33,11 @@ module.exports = (extraValidators = {}) => {
           console.error('Field is missing!', this);
           return;
         }
+
+        // We need to know if 2-way binding is being used so we know where to store the adjusted value.
+        // This check is a little bit dirty, but the only thing that works.
+        // Since vue handles 2-way binding through the 'input' event, we can check if there is something listening to it.
+        this.isTwoWayBind = this.$options._parentListeners && !!this.$options._parentListeners.input;
 
         validatorGroup = util.findValidatorGroup(this);
 
@@ -63,16 +69,16 @@ module.exports = (extraValidators = {}) => {
     methods: {
       blurField(event) {
         if(event) {
-          this.localValue = event.target.value;
-          this.$emit('input', event.target.value);
+          this.val = event.target.value;
         }
         this.blurred = true;
-        this.showValidationMessage();
         this.$emit('blur-field', this);
+        this.showValidationMessage();
       },
       changeField(event) {
-        this.localValue = event.target.value;
-        this.$emit('input', event.target.value);
+        if(event) {
+          this.val = event.target.value;
+        }
         this.$emit('change-field', this);
         this.showValidationMessage();
       },
@@ -111,26 +117,32 @@ module.exports = (extraValidators = {}) => {
     computed: {
       isValid() {
         return this.validators.filter(validator => {
-            return validator.isValid(this.localValue);
+            return validator.isValid(this.val);
           }).length === this.validators.length && !this.extraErrorMessage;
       },
       // Returns the error-message
       validationMessage() {
         let message = '';
         this.validators.forEach(validator => {
-          const valid = validator.isValid(this.localValue);
+          const valid = validator.isValid(this.val);
           if(!valid && !message) {
             message = validator.getMessage();
           }
         });
         return message || this.extraErrorMessage;
       },
-      localValue: {
+      val: {
         get() {
-          return this.value || this.localInputValue;
+          if(this.isTwoWayBind) {
+            return this.value;
+          }
+          return this.localInputValue;
         },
         set(value) {
-          this.localInputValue = value;
+          if(this.isTwoWayBind) {
+            return this.$emit('input', value);
+          }
+          return this.localInputValue = value;
         }
       }
     },
