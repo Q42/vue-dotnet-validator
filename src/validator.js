@@ -75,7 +75,6 @@ module.exports = (extraValidators = {}) => {
         if(event) {
           this.val = event.target.value;
         }
-        this.hasChanged = true;
         this.blurred = true;
         this.$emit('blur-field', this);
         this.showValidationMessage();
