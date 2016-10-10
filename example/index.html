@@ -89,6 +89,14 @@
                     </label>
                 </validator>
             </test-component>
+
+            <validator value="value from server" inline-template>
+                <label>
+                    <span asp-validation-for="stuff" ref="message" class="message">Message from server!</span>
+                    <span>Server side message</span>
+                    <input name="field6" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+                </label>
+            </validator>
             <button type="submit">Register</button>
         </form>
     </vue-dotnet-validator-group>

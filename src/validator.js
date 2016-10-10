@@ -25,7 +25,8 @@ module.exports = (extraValidators = {}) => {
         blurred: false,
         // This variable is used to store the current value if not in two-way mode.
         localInputValue: this.value,
-        isTwoWayBind: false
+        isTwoWayBind: false,
+        hasChanged: false
       };
     },
     mounted() {
@@ -74,6 +75,7 @@ module.exports = (extraValidators = {}) => {
         if(event) {
           this.val = event.target.value;
         }
+        this.hasChanged = true;
         this.blurred = true;
         this.$emit('blur-field', this);
         this.showValidationMessage();
@@ -82,6 +84,7 @@ module.exports = (extraValidators = {}) => {
         if(event) {
           this.val = event.target.value;
         }
+        this.hasChanged = true;
         this.$emit('change-field', this);
         this.showValidationMessage();
       },
@@ -132,6 +135,10 @@ module.exports = (extraValidators = {}) => {
             message = validator.getMessage();
           }
         });
+        if(!message && !this.hasChanged) {
+          // User has not done anything yet, if server-side message is present, show that.
+          message = this.$refs.message.innerHTML;
+        }
         return message || this.extraErrorMessage;
       },
       // This is the internally used value
