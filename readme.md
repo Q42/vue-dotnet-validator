@@ -34,7 +34,7 @@ The following code should be added to your cshtml forms. This makes sure that th
     <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">
         <validator value="@Model.LastName" inline-template>
            <span asp-validation-for="LastName" ref="message"></span>
-           <input type="text" asp-for="LastName" ref="field" v-model="val" />
+           <input type="text" asp-for="LastName" ref="field" :value="val" />
         </validator>
         <button type="submit">Register</button>
     </form>
