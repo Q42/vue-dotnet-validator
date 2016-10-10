@@ -23,11 +23,14 @@ module.exports = (extraValidators = {}) => {
       return {
         validators: [],
         blurred: false,
+        // This variable is used to store the current value if not in two-way mode.
         localInputValue: this.value,
         isTwoWayBind: false
       };
     },
     mounted() {
+      // Retrieve server-side value from DOM.
+      //this.localInputValue = this.$refs.field.value;
       this.$nextTick(() => {
         if(!this.$refs.field) {
           console.error('Field is missing!', this);
@@ -131,6 +134,7 @@ module.exports = (extraValidators = {}) => {
         });
         return message || this.extraErrorMessage;
       },
+      // This is the internally used value
       val: {
         get() {
           if(this.isTwoWayBind) {
@@ -140,6 +144,7 @@ module.exports = (extraValidators = {}) => {
         },
         set(value) {
           if(this.isTwoWayBind) {
+            // Two-way binding requires to emit an event in vue 2.x
             return this.$emit('input', value);
           }
           return this.localInputValue = value;
