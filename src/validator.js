@@ -117,6 +117,7 @@ module.exports = (extraValidators = {}) => {
         const id = `vue-validator-${parseInt(Math.random()*100)}-${this._uid}`;
         this.$refs.message.id = id;
         this.$refs.field.setAttribute('aria-describedby', id);
+        this.$refs.message.setAttribute('role', 'alert');
       }
     },
     computed: {
