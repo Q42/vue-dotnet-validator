@@ -59,7 +59,9 @@ module.exports = (extraValidators = {}) => {
         // Make sure we update the validation message as soon as it changes.
         this.$watch('validationMessage', this.showValidationMessage);
 
-        this.$refs.field.addEventListener('blur', this.blurField);
+        if(!this.isCheckbox) {
+          this.$refs.field.addEventListener('blur', this.blurField);
+        }
         this.$refs.field.addEventListener('change', this.changeField);
         this.$refs.field.addEventListener('input', this.changeField);
         validatorGroup.addValidator(this);
@@ -81,7 +83,12 @@ module.exports = (extraValidators = {}) => {
       },
       changeField(event) {
         if(event) {
-          this.val = event.target.value;
+          if(this.isCheckbox) {
+            this.blurred = true; // We are not using blur-event on checkbox, so lets force blurred here.
+            this.val = this.val ? '' : event.target.value;
+          } else {
+            this.val = event.target.value;
+          }
         }
         this.hasChanged = true;
         this.$emit('change-field', this);
@@ -156,6 +163,9 @@ module.exports = (extraValidators = {}) => {
           }
           return this.localInputValue = value;
         }
+      },
+      isCheckbox() {
+        return this.$refs.field && this.$refs.field.type == 'checkbox';
       }
     },
     watch: {
