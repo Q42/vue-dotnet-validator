@@ -26,7 +26,8 @@ module.exports = (extraValidators = {}) => {
         // This variable is used to store the current value if not in two-way mode.
         localInputValue: this.value,
         isTwoWayBind: false,
-        hasChanged: false
+        hasChanged: false,
+        name: ''
       };
     },
     mounted() {
@@ -37,6 +38,8 @@ module.exports = (extraValidators = {}) => {
           console.error('Field is missing!', this);
           return;
         }
+
+        this.name = this.$refs.field.name;
 
         // We need to know if 2-way binding is being used so we know where to store the adjusted value.
         // This check is a little bit dirty, but the only thing that works.
@@ -104,7 +107,7 @@ module.exports = (extraValidators = {}) => {
             // Validator should not be activated
             return;
           }
-          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, this.$refs.field));
+          this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, validatorGroup));
         });
       },
       showValidationMessage() {
