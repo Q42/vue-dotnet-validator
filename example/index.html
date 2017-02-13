@@ -122,7 +122,7 @@
                 <label>
                     <span asp-validation-for="stuff" ref="message" class="message"></span>
                     <span>Equal to</span>
-                    <input name="field7" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the next input!" data-val-equalto-other="field8"/>
+                    <input name="field7" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the next input!" data-val-equalto-other="*.field8"/>
                 </label>
             </validator>
 
@@ -130,7 +130,7 @@
                 <label>
                     <span asp-validation-for="stuff" ref="message" class="message"></span>
                     <span>Equal to</span>
-                    <input name="field8" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the previous input!" data-val-equalto-other="field7"/>
+                    <input name="field8" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the previous input!" data-val-equalto-other="*.field7"/>
                 </label>
             </validator>
             <button type="submit">Register</button>
