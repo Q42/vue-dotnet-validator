@@ -4,5 +4,6 @@ module.exports = {
   Maxlength: require('./validators/maxlengthvalidator.js'),
   Length: require('./validators/stringlengthvalidator.js'),
   Range: require('./validators/rangevalidator.js'),
-  Regex: require('./validators/regexvalidator.js')
+  Regex: require('./validators/regexvalidator.js'),
+  Equalto: require('./validators/equaltovalidator.js')
 };

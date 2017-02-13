@@ -1,3 +1,8 @@
+function endsWith(string, suffix) {
+    return string.indexOf(suffix, string.length - suffix.length) !== -1;
+}
+
+
 module.exports = {
     name: 'vue-dotnet-validator-group',
     props: {
@@ -30,6 +35,11 @@ module.exports = {
 
             this.loading = valid;
             return false;
+        },
+        findValidatorsByName(name) {
+            // Normalize string, in some cases the name contains a * or a ., like in equal-to validation.
+            name = name.replace(/\*/g, '').replace(/\./g, '');
+            return this.validators.filter(validator => endsWith(validator.name, name));
         },
         addValidator(validator) {
             this.validators.push(validator);
