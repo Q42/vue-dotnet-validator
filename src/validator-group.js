@@ -37,7 +37,8 @@ module.exports = {
             return false;
         },
         findValidatorsByName(name) {
-            name = name.replace('*', '');
+            // Normalize string, in some cases the name contains a * or a ., like in equal-to validation.
+            name = name.replace(/\*/g, '').replace(/\./g, '');
             return this.validators.filter(validator => endsWith(validator.name, name));
         },
         addValidator(validator) {
