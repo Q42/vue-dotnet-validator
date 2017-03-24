@@ -1,7 +1,7 @@
 # Vue dotnet validator
 A vuejs validator for .NET forms.
 
-# Build status
+## Build status
 [![CircleCI](https://circleci.com/gh/Q42/vue-dotnet-validator/tree/master.svg?style=svg)](https://circleci.com/gh/Q42/vue-dotnet-validator/tree/master)
 
 ## Summary
@@ -11,15 +11,15 @@ The idea is that you use this on your server rendered HTML forms which include t
 ## Requirements
 This package (from version 0.3.0 and up) requires vue 2.x.
 
-##Installation
+## Installation
 `npm install vue-dotnet-validator`
 
 
-##Usage
+## Usage
 
 Using this library requires changes on two places in your application, JavaScript and your razor cshtml templates.
 
-###JavaScript
+### JavaScript
 This registers the vue components so that vue.js knows what to activate.
 Base usage:
 ```JavaScript
@@ -30,7 +30,7 @@ Vue.component('validator', dotnetValidator.validator());
 ```
 
 
-###Cshtml
+### Cshtml
 The following code should be added to your cshtml forms. This makes sure that the validator logic is activated and adds the required references to DOM-nodes.
 ```HTML
 <validator-group inline-template>
@@ -45,9 +45,9 @@ The following code should be added to your cshtml forms. This makes sure that th
 ```
 
 
-##Creating custom validators
+## Creating custom validators
 It is possible to create your own validators, below is an example of a very simple custom validator.
-###JavaScript
+### JavaScript
 ```JavaScript
 
 class MyCustomValidator extends vueDotnetValidator.BaseValidator {
@@ -63,9 +63,9 @@ Vue.component('validator', dotnetValidator.validator(validators));
 
 ```
 
-###Cshtml
+### Cshtml
 To use this custom validator in your own form, make sure your custom .NET data annotation outputs a `data-val-mycustom="MESSAGE"` attribute on your `<input>` DOM node.
 
-##Custom validators with additional parameters
+## Custom validators with additional parameters
 You can extend the features of your custom validators using additional data-attributes on your `<input>` tag. This is a feature supported in .NET.
 For an example on the usage of this feature, see `regexvalidator.js`.
