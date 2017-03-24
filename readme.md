@@ -1,7 +1,7 @@
-#Vue dotnet validator
+# Vue dotnet validator
 A vuejs validator for .NET forms.
 
-#Build status
+# Build status
 [![CircleCI](https://circleci.com/gh/Q42/vue-dotnet-validator/tree/master.svg?style=svg)](https://circleci.com/gh/Q42/vue-dotnet-validator/tree/master)
 
 ## Summary
