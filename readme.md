@@ -44,6 +44,30 @@ The following code should be added to your cshtml forms. This makes sure that th
 </validator-group>
 ```
 
+#### Explanation of the cshtml changes:
+`<validator-group inline-template>`
+
+This behaves as a container for the entire form, so we can maintain the state of the entire form and the validation status of the input fields in it.
+
+`v-on:submit="validate"`
+
+This adds an event listener to the `<form>` tag to make sure we prevent the default form submit event when fields are invalid.
+
+`<validator value="@Model.LastName" inline-template>`
+
+This adds a validator instance to the form. The `@Model.LastName` is the property of your model.
+
+`ref="message"`
+
+This adds a reference to the validation-message element. This makes sure the validation message is displayed at the correct position in the DOM.
+
+`ref="field"`
+
+This adds a reference to the input field, so the `<validator>` instance knows what element to watch.
+
+`v-model="val"`
+
+This adds the model binding in the `<validator>` instance.
 
 ## Creating custom validators
 It is possible to create your own validators, below is an example of a very simple custom validator.
