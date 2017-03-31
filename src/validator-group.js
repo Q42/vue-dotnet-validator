@@ -34,7 +34,7 @@ module.exports = {
             }
 
             this.loading = valid;
-            return false;
+            return valid;
         },
         findValidatorsByName(name) {
             // Normalize string, in some cases the name contains a * or a ., like in equal-to validation.
