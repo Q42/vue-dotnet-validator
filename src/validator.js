@@ -39,7 +39,8 @@ module.exports = (extraValidators = {}) => {
         this.resolveField(this);
 
         if(!this.field) {
-          return;
+            console.error('Field is missing!', this);
+            return;
         }
 
         this.name = this.field.name;
@@ -86,7 +87,6 @@ module.exports = (extraValidators = {}) => {
           }
 
           if(!component.$refs.field) {
-              console.error('Field is missing!', this);
               return;
           }
 
