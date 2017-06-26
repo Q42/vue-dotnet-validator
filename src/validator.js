@@ -36,7 +36,7 @@ module.exports = (extraValidators = {}) => {
       //this.localInputValue = this.$refs.field.value;
 
       this.$nextTick(() => {
-        this.resolveField(this);
+        this.field = this.resolveField(this);
 
         if(!this.field) {
             console.error('Field is missing!', this);
@@ -81,16 +81,19 @@ module.exports = (extraValidators = {}) => {
     },
     methods: {
       resolveField(component) {
+          if(!component) {
+            return;
+          }
+
           if(component.$children instanceof Array && component.$children.length > 0) {
-              component.$children.forEach(child => this.resolveField(child));
-              return;
+            return component.$children.map(child => this.resolveField(child)).filter(result => {return result})[0];
           }
 
           if(!component.$refs.field) {
               return;
           }
 
-          this.field = component.$refs.field;
+          return component.$refs.field;
       },
       blurField(event) {
         if(event) {
