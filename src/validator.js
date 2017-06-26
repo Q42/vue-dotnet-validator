@@ -34,7 +34,6 @@ module.exports = (extraValidators = {}) => {
     mounted() {
       // Retrieve server-side value from DOM.
       //this.localInputValue = this.$refs.field.value;
-
       this.$nextTick(() => {
         this.field = this.resolveField(this);
 
