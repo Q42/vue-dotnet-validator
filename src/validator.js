@@ -81,9 +81,7 @@ module.exports = (extraValidators = {}) => {
     methods: {
       resolveField(component) {
           if(component.$children instanceof Array && component.$children.length > 0) {
-              component.$children.forEach(child => {
-                  this.resolveField(child);
-              });
+              component.$children.forEach(child => this.resolveField(child));
               return;
           }
 
