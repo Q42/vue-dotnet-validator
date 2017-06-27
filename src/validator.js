@@ -85,7 +85,7 @@ module.exports = (extraValidators = {}) => {
           }
 
           if(component.$children.length > 0) {
-            return component.$children.map(child => this.resolveField(child)).filter(result => {return result})[0];
+            return component.$children.map(child => this.resolveField(child)).filter(result => !!result)[0];
           }
 
           return component.$refs.field;
