@@ -27,19 +27,22 @@ module.exports = (extraValidators = {}) => {
         localInputValue: this.value,
         isTwoWayBind: false,
         hasChanged: false,
-        name: ''
+        name: '',
+        field: null
       };
     },
     mounted() {
       // Retrieve server-side value from DOM.
       //this.localInputValue = this.$refs.field.value;
       this.$nextTick(() => {
-        if(!this.$refs.field) {
-          console.error('Field is missing!', this);
-          return;
+        this.field = this.resolveField(this);
+
+        if(!this.field) {
+            console.error('Field is missing!', this);
+            return;
         }
 
-        this.name = this.$refs.field.name;
+        this.name = this.field.name;
 
         // We need to know if 2-way binding is being used so we know where to store the adjusted value.
         // This check is a little bit dirty, but the only thing that works.
@@ -63,10 +66,10 @@ module.exports = (extraValidators = {}) => {
         this.$watch('validationMessage', this.showValidationMessage);
 
         if(!this.isCheckbox) {
-          this.$refs.field.addEventListener('blur', this.blurField);
+          this.field.addEventListener('blur', this.blurField);
         }
-        this.$refs.field.addEventListener('change', this.changeField);
-        this.$refs.field.addEventListener('input', this.changeField);
+        this.field.addEventListener('change', this.changeField);
+        this.field.addEventListener('input', this.changeField);
         validatorGroup.addValidator(this);
       });
     },
@@ -76,6 +79,21 @@ module.exports = (extraValidators = {}) => {
       });
     },
     methods: {
+      resolveField(component) {
+          if(!component) {
+            return null;
+          }
+
+          if(component.$refs.field) {
+            return component.$refs.field;
+          }
+
+          if(component.$children.length > 0) {
+            return component.$children.map(child => this.resolveField(child)).filter(result => !!result)[0];
+          }
+
+          return null;
+      },
       blurField(event) {
         if(event) {
           this.val = event.target.value;
@@ -99,7 +117,7 @@ module.exports = (extraValidators = {}) => {
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
-        let dataAttributes = this.$refs.field.dataset;
+        let dataAttributes = this.field.dataset;
         let validatorKeys = Object.keys(validators);
         validatorKeys.forEach(validatorKey => {
           let validationMessage = dataAttributes['val' + validatorKey];
@@ -126,7 +144,7 @@ module.exports = (extraValidators = {}) => {
         // No need to force this kind of stuff, in almost any case this will be enough.
         const id = `vue-validator-${parseInt(Math.random()*100)}-${this._uid}`;
         this.$refs.message.id = id;
-        this.$refs.field.setAttribute('aria-describedby', id);
+        this.field.setAttribute('aria-describedby', id);
         this.$refs.message.setAttribute('role', 'alert');
       }
     },
@@ -168,12 +186,12 @@ module.exports = (extraValidators = {}) => {
         }
       },
       isCheckbox() {
-        return this.$refs.field && this.$refs.field.type == 'checkbox';
+        return this.field && this.field.type == 'checkbox';
       }
     },
     watch: {
       isValid() {
-        this.$refs.field.setAttribute('aria-invalid', !this.isValid);
+        this.field.setAttribute('aria-invalid', !this.isValid);
       }
     }
   }
