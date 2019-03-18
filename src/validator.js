@@ -15,7 +15,7 @@ module.exports = (extraValidators = {}) => {
         default: ''
       },
       // This parameter can be used to provide additional complex validation from your app
-      'extra-error-message': {
+      extraErrorMessage: {
         default: ''
       }
     },
@@ -23,6 +23,7 @@ module.exports = (extraValidators = {}) => {
       return {
         validators: [],
         blurred: false,
+        hasValidationError: false,
         // This variable is used to store the current value if not in two-way mode.
         localInputValue: this.value,
         isTwoWayBind: false,
@@ -135,8 +136,10 @@ module.exports = (extraValidators = {}) => {
         }
         this.$refs.message.innerHTML = this.validationMessage;
         if(this.validationMessage) {
+          this.hasValidationError = true;
           return this.$refs.message.classList.remove(validClass);
         }
+        this.hasValidationError = false;
         return this.$refs.message.classList.add(validClass);
       },
       addAriaDescribedBy() {
