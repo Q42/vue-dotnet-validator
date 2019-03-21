@@ -1,6 +1,6 @@
 {
   "name": "vue-dotnet-validator",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "main": "dist/index.js",
   "author": {
     "name": "Ted de Koning",
