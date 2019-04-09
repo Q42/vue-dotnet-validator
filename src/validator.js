@@ -66,7 +66,7 @@ module.exports = (extraValidators = {}) => {
         // Make sure we update the validation message as soon as it changes.
         this.$watch('validationMessage', this.showValidationMessage);
 
-        if(!this.isCheckbox) {
+        if(!this.isCheckbox && !this.isRadio) {
           this.field.addEventListener('blur', this.blurField);
         }
         this.field.addEventListener('change', this.changeField);
@@ -190,6 +190,9 @@ module.exports = (extraValidators = {}) => {
       },
       isCheckbox() {
         return this.field && this.field.type == 'checkbox';
+      },
+      isRadio() {
+        return this.field && this.field.type == 'radio';
       }
     },
     watch: {
