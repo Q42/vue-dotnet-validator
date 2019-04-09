@@ -58,6 +58,7 @@ module.exports = (extraValidators = {}) => {
         if(this.$refs.message.innerText) {
           // When we already have innerText, it means the server has output a validation error.
           // We need to replace that validation message as soon as the user changes the value of the input
+          this.hasValidationError = true;
           this.blurred = true;
         } else {
           this.$refs.message.classList.add(validClass);
