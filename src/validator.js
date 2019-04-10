@@ -106,7 +106,7 @@ module.exports = (extraValidators = {}) => {
       },
       changeField(event) {
         if(event) {
-          if(this.isCheckbox) {
+          if(this.isCheckbox || this.isRadio) {
             this.blurred = true; // We are not using blur-event on checkbox, so lets force blurred here.
             this.val = event.target.checked ? event.target.value : '';
           } else {
@@ -182,6 +182,8 @@ module.exports = (extraValidators = {}) => {
           return this.localInputValue;
         },
         set(value) {
+          this.hasChanged = true;
+
           if(this.isTwoWayBind) {
             // Two-way binding requires to emit an event in vue 2.x
             return this.$emit('input', value);
