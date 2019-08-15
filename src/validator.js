@@ -108,7 +108,9 @@ module.exports = (extraValidators = {}) => {
         if(event) {
           if(this.isCheckbox || this.isRadio) {
             this.blurred = true; // We are not using blur-event on checkbox, so lets force blurred here.
-            this.val = event.target.checked ? event.target.value : '';
+            this.val = this.isCheckbox
+              ? event.target.checked
+              : event.target.checked ? event.target.value : '';
           } else {
             this.val = event.target.value;
           }
