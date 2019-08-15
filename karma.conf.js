@@ -4,14 +4,6 @@ var webpackConfig = require('./webpack.config');
 // Remove the regular webpack entry, we will be using the test entry point.
 delete webpackConfig.entry;
 
-// only apply babel for test files
-webpackConfig.module.loaders.some(function (loader, i) {
-  if (loader.loader === 'babel') {
-    loader.test = /\.(spec.js|js)$/;
-    return true
-  }
-});
-
 module.exports = function(config) {
   config.set({
 

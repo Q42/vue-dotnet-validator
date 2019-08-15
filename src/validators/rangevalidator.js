@@ -1,6 +1,6 @@
 import BaseValidator from './basevalidator.js';
 
-class RangeValidator extends BaseValidator {
+export default class RangeValidator extends BaseValidator {
   constructor(message, attributes) {
     super(message, attributes);
     this.min = parseFloat(attributes['valRangeMin']);
@@ -11,5 +11,3 @@ class RangeValidator extends BaseValidator {
     return (!value && parsedValue != 0) || (!isNaN(parsedValue) && parsedValue >= this.min && parsedValue <= this.max);
   }
 }
-
-module.exports = RangeValidator;

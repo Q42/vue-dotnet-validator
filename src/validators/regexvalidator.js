@@ -1,6 +1,6 @@
 import BaseValidator from './basevalidator.js';
 
-class RegexValidator extends BaseValidator {
+export default class RegexValidator extends BaseValidator {
   constructor(message, attributes) {
     super(message, attributes);
     this.regex = new RegExp(attributes['valRegexPattern']);
@@ -9,5 +9,3 @@ class RegexValidator extends BaseValidator {
     return !value || this.regex.test(value);
   }
 }
-
-module.exports = RegexValidator;

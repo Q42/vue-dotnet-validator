@@ -1,22 +1,24 @@
-var webpack = require("webpack");
+const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: {
         'index': './index.js',
         'example': './example.js'
     },
     output: {
-        path: './dist',
+        path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
         library: "vueDotnetValidator",
         libraryTarget: 'umd'
     },
     module: {
-        loaders: [
-            { test: /\.(babel|js)$/, loader: 'babel' },
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules|dist/,
+                loader: 'babel-loader'
+            },
         ]
-    },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({minimize: true})
-    ]
+    }
 };

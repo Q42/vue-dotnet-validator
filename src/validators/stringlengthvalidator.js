@@ -1,6 +1,6 @@
 import BaseValidator from './basevalidator.js';
 
-class StringLengthValidator extends BaseValidator {
+export default class StringLengthValidator extends BaseValidator {
   constructor(message, attributes) {
     super(message, attributes);
     this.maxLength = attributes['valLengthMax'];
@@ -11,5 +11,3 @@ class StringLengthValidator extends BaseValidator {
       (value.length >= this.minLength && value.length <= this.maxLength);
   }
 }
-
-module.exports = StringLengthValidator;

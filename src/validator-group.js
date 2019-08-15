@@ -3,7 +3,7 @@ function endsWith(string, suffix) {
 }
 
 
-module.exports = {
+export default {
     name: 'vue-dotnet-validator-group',
     props: {
         onValid: {

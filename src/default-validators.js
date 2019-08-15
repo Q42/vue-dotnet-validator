@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   Required: require('./validators/requiredvalidator.js'),
   Minlength: require('./validators/minlengthvalidator.js'),
   Maxlength: require('./validators/maxlengthvalidator.js'),
