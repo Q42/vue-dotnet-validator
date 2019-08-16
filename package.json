@@ -11,7 +11,8 @@
   "homepage": "https://github.com/Q42/vue-dotnet-validator",
   "repository": "Q42/vue-dotnet-validator",
   "scripts": {
-    "build": "npm install && npm run test && webpack --mode=production",
+    "install": "npm run test && npm run  build",
+    "build": "webpack --mode=production",
     "test": "karma start",
     "watch": "webpack --watch"
   },
