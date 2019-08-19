@@ -11,7 +11,7 @@
   "homepage": "https://github.com/Q42/vue-dotnet-validator",
   "repository": "Q42/vue-dotnet-validator",
   "scripts": {
-    "prepublishOnly": "npm run test && npm run  build",
+    "prepublishOnly": "npm i && npm run test && npm run build",
     "build": "webpack --mode=production",
     "test": "jest",
     "watch": "webpack --watch"
