@@ -1,6 +1,6 @@
 import util from './util';
 
-module.exports = (extraValidators = {}) => {
+export default (extraValidators = {}) => {
   let validators = require('./default-validators');
   // Add extraValidators to the default validators.
   for (var attrname in extraValidators) { validators[attrname] = extraValidators[attrname]; }

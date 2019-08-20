@@ -1,6 +1,6 @@
 import BaseValidator from './basevalidator.js';
 
-class EqualToValidator extends BaseValidator {
+export default class EqualToValidator extends BaseValidator {
   constructor(message, attributes, validatorGroup) {
     super(message, attributes, validatorGroup);
     this.otherFieldName = attributes['valEqualtoOther'];
@@ -15,5 +15,3 @@ class EqualToValidator extends BaseValidator {
     return !value || !otherField || value == otherField.val;
   }
 }
-
-module.exports = EqualToValidator;
