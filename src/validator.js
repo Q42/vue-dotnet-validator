@@ -9,6 +9,7 @@ export default (extraValidators = {}) => {
   let validatorGroup = null;
 
   return {
+    name: 'vue-dotnet-validator',
     props: {
       // Value is the value that will be validated
       value: {
