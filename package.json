@@ -13,8 +13,9 @@
   "scripts": {
     "prepublishOnly": "npm i && npm run test && npm run build",
     "build": "webpack --mode=production",
-    "test": "jest",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "test": "jest --verbose --coverage",
+    "test:watch": "jest --verbose --watch"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
