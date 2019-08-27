@@ -4,7 +4,6 @@ module.exports = {
     mode: 'development',
     entry: {
         'index': './index.js',
-        'example': './example.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
