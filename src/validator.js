@@ -1,9 +1,11 @@
+import * as defaultValidators from'./validators';
 import util from './util';
 
 export default (extraValidators = {}) => {
-  let validators = require('./default-validators');
-  // Add extraValidators to the default validators.
-  for (var attrname in extraValidators) { validators[attrname] = extraValidators[attrname]; }
+  const validators = {
+    ...defaultValidators,
+    ...extraValidators
+  }
 
   const validClass = 'field-validation-valid';
   let validatorGroup = null;
