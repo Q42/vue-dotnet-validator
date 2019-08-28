@@ -14,6 +14,7 @@
     "prepublishOnly": "npm i && npm run test && npm run build",
     "build": "webpack --mode=production",
     "watch": "webpack --watch",
+    "watch:production": "webpack --watch --mode=production",
     "test": "jest --verbose --coverage",
     "test:watch": "jest --verbose --watch"
   },
