@@ -1,4 +1,5 @@
-import { validatorGroup, validator, BaseValidator } from './dist/index';
+/* global Vue */
+import { validatorGroup, validator, BaseValidator } from './index';
 
 var customValidators = {};
 

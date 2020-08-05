@@ -13,8 +13,8 @@
   "repository": "Q42/vue-dotnet-validator",
   "files": [
     "dist/",
-    "example/",
     "src/",
+    "example.html",
     "example.js",
     "index.js"
   ],
