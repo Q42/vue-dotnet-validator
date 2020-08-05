@@ -124,10 +124,12 @@ export default (extraValidators = {}) => {
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
-        let dataAttributes = this.field.dataset;
-        let validatorKeys = Object.keys(validators);
+        const dataAttributes = this.field.dataset;
+        const validatorKeys = Object.keys(validators);
+
         validatorKeys.forEach(validatorKey => {
-          let validationMessage = dataAttributes['val' + validatorKey];
+          const validationMessage = dataAttributes['val' + validatorKey];
+
           if(!validationMessage) {
             // Validator should not be activated
             return;
