@@ -128,7 +128,8 @@ export default (extraValidators = {}) => {
         const validatorKeys = Object.keys(validators);
 
         validatorKeys.forEach(validatorKey => {
-          const validationMessage = dataAttributes['val' + validatorKey];
+          const sanitzedKey = validatorKey.charAt(0).toUpperCase() + validatorKey.slice(1).toLowerCase();
+          const validationMessage = dataAttributes['val' + sanitzedKey];
 
           if(!validationMessage) {
             // Validator should not be activated
