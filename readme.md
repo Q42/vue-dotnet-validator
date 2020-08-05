@@ -14,21 +14,18 @@ This package (from version 0.3.0 and up) requires vue 2.x.
 ## Installation
 `npm install vue-dotnet-validator`
 
-
 ## Usage
-
 Using this library requires changes on two places in your application, JavaScript and your razor cshtml templates.
 
 ### JavaScript
-This registers the vue components so that vue.js knows what to activate.
+This registers the vue components so that Vue.js knows what to activate.
 Base usage:
 ```JavaScript
-import dotnetValidator from './dotnet-validator/dotnet-validator';
-Vue.component('validator-group', dotnetValidator.validatorGroup);
-Vue.component('validator', dotnetValidator.validator());
+import { validatorGroup, validator } from 'vue-dotnet-validator';
 
+Vue.component('validator-group', validatorGroup);
+Vue.component('validator', validator());
 ```
-
 
 ### Cshtml
 The following code should be added to your cshtml forms. This makes sure that the validator logic is activated and adds the required references to DOM-nodes.
@@ -71,20 +68,22 @@ This adds the model binding in the `<validator>` instance.
 
 ## Creating custom validators
 It is possible to create your own validators, below is an example of a very simple custom validator.
+
 ### JavaScript
 ```JavaScript
+import { validator, BaseValidator } from 'vue-dotnet-validator';
 
-class MyCustomValidator extends vueDotnetValidator.BaseValidator {
+class MyCustomValidator extends BaseValidator {
     isValid(value) {
         return !value || value == 'Hello';
     }
 }
-let validators = {
-  Mycustomvalidator: MyCustomValidator
+
+const validators = {
+  MyCustomValidator
 };
 
-Vue.component('validator', dotnetValidator.validator(validators));
-
+Vue.component('validator', validator(validators));
 ```
 
 ### Cshtml

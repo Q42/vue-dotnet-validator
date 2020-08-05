@@ -7,7 +7,9 @@ class MyCustomValidator extends BaseValidator {
     }
 }
 
-const customValidators = { MyCustomValidator };
+const customValidators = {
+  MyCustomValidator
+};
 
 Vue.component('validator', validator(customValidators));
 Vue.component('vue-dotnet-validator-group', validatorGroup);
