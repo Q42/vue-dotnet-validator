@@ -34,6 +34,9 @@
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.6"
   },
+  "peerDependencies": {
+    "vue": "2.x"
+  },
   "keywords": [
     "vue",
     "dotnet",
