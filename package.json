@@ -19,7 +19,7 @@
     "index.js"
   ],
   "scripts": {
-    "prepublishOnly": "npm i && npm run test && npm run build",
+    "prepublishOnly": "npm i && npm run build && npm run test",
     "build": "webpack --mode=production",
     "watch": "webpack --watch",
     "watch:production": "webpack --watch --mode=production",
