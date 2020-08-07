@@ -208,7 +208,9 @@ export default (extraValidators = {}) => {
     },
     watch: {
       isValid() {
-        this.field.setAttribute('aria-invalid', !this.isValid);
+        if(this.field) {
+          this.field.setAttribute('aria-invalid', !this.isValid);
+        }
       }
     }
   }
