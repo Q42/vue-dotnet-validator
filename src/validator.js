@@ -124,10 +124,13 @@ export default (extraValidators = {}) => {
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
-        let dataAttributes = this.field.dataset;
-        let validatorKeys = Object.keys(validators);
+        const dataAttributes = this.field.dataset;
+        const validatorKeys = Object.keys(validators);
+
         validatorKeys.forEach(validatorKey => {
-          let validationMessage = dataAttributes['val' + validatorKey];
+          const sanitzedKey = validatorKey.charAt(0).toUpperCase() + validatorKey.slice(1).toLowerCase();
+          const validationMessage = dataAttributes['val' + sanitzedKey];
+
           if(!validationMessage) {
             // Validator should not be activated
             return;
@@ -205,7 +208,9 @@ export default (extraValidators = {}) => {
     },
     watch: {
       isValid() {
-        this.field.setAttribute('aria-invalid', !this.isValid);
+        if(this.field) {
+          this.field.setAttribute('aria-invalid', !this.isValid);
+        }
       }
     }
   }

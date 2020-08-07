@@ -1,6 +1,5 @@
-import { validatorGroup, validator, BaseValidator } from './dist/index';
-
-var customValidators = {};
+/* global Vue */
+import { validatorGroup, validator, BaseValidator } from './index';
 
 class MyCustomValidator extends BaseValidator {
     isValid(value) {
@@ -8,7 +7,9 @@ class MyCustomValidator extends BaseValidator {
     }
 }
 
-customValidators.Mycustomvalidator = MyCustomValidator;
+const customValidators = {
+  MyCustomValidator
+};
 
 Vue.component('validator', validator(customValidators));
 Vue.component('vue-dotnet-validator-group', validatorGroup);
