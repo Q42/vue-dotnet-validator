@@ -20,6 +20,10 @@ export default (extraValidators = {}) => {
       // This parameter can be used to provide additional complex validation from your app
       extraErrorMessage: {
         default: ''
+      },
+      instantValidation: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -100,7 +104,7 @@ export default (extraValidators = {}) => {
           return null;
       },
       blurField(event) {
-        if(event) {
+        if(event && event.target.value !== '') {
           this.val = event.target.value;
         }
         this.blurred = true;
@@ -139,8 +143,8 @@ export default (extraValidators = {}) => {
         });
       },
       showValidationMessage() {
-        if(!this.blurred) {
-          // Only show validation after blur.
+        if((!this.instantValidation && !this.hasChanged) || !this.blurred) {
+          // Only show validation when has changed and instant validation is changed or after blur.
           return;
         }
         this.$refs.message.innerHTML = this.validationMessage;
@@ -175,7 +179,7 @@ export default (extraValidators = {}) => {
             message = validator.getMessage();
           }
         });
-        if(!message && !this.hasChanged) {
+        if(!message && !this.hasChanged && this.instantValidation) {
           // User has not done anything yet, if server-side message is present, show that.
           message = this.$refs.message.innerHTML;
         }

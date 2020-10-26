@@ -25,6 +25,8 @@ export default {
                 if(!validator.isValid) {
                     valid = false;
                     event.preventDefault();
+                    validator.hasChanged = true;
+                    validator.showValidationMessage();
                     validator.blurField(); // Force showing validation.
                 }
             });
