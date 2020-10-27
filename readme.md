@@ -66,6 +66,10 @@ This adds a reference to the input field, so the `<validator>` instance knows wh
 
 This adds the model binding in the `<validator>` instance.
 
+`:instant-validation="false"` (optional, default is `true`)
+
+When this is turned off the validation only triggers after the first change (instead of first blur) or on submit of the validator group.
+
 ## Creating custom validators
 It is possible to create your own validators, below is an example of a very simple custom validator.
 
@@ -92,3 +96,11 @@ To use this custom validator in your own form, make sure your custom .NET data a
 ## Custom validators with additional parameters
 You can extend the features of your custom validators using additional data-attributes on your `<input>` tag. This is a feature supported in .NET.
 For an example on the usage of this feature, see `regexvalidator.js`.
+
+## Publish a new version
+Make sure you have publish rights at the Q42 organisation on NPM.
+
+```shell
+npm version [major|minor|patch]
+npm publish
+```
