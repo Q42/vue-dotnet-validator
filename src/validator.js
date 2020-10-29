@@ -6,6 +6,12 @@ export default (extraValidators = {}) => {
     ...defaultValidators,
     ...extraValidators
   }
+  
+  const validationStyles = {
+      afterBlur: 'after-blur', // default
+      afterChange: 'after-change',
+      afterSubmit: 'after-submit'
+  } 
 
   const validClass = 'field-validation-valid';
   let validatorGroup = null;
@@ -21,9 +27,8 @@ export default (extraValidators = {}) => {
       extraErrorMessage: {
         default: ''
       },
-      instantValidation: {
-        type: Boolean,
-        default: true
+      validationStyle: {
+        default: validationStyles.afterBlur
       }
     },
     data() {
@@ -35,6 +40,8 @@ export default (extraValidators = {}) => {
         localInputValue: this.value,
         isTwoWayBind: false,
         hasChanged: false,
+        hasForced: false,
+        hasBlurred: false,
         name: '',
         field: null
       };
@@ -71,9 +78,6 @@ export default (extraValidators = {}) => {
           this.$refs.message.classList.add(validClass);
         }
 
-        // Make sure we update the validation message as soon as it changes.
-        this.$watch('validationMessage', this.showValidationMessage);
-
         if(!this.isCheckbox && !this.isRadio) {
           this.field.addEventListener('blur', this.blurField);
         }
@@ -108,8 +112,9 @@ export default (extraValidators = {}) => {
           this.val = event.target.value;
         }
         this.blurred = true;
+        this.hasBlurred = true;
         this.$emit('blur-field', this);
-        this.showValidationMessage();
+        this.showValidationMessage(false);
       },
       changeField(event) {
         if(event) {
@@ -124,7 +129,7 @@ export default (extraValidators = {}) => {
         }
         this.hasChanged = true;
         this.$emit('change-field', this);
-        this.showValidationMessage();
+        this.showValidationMessage(false);
       },
       // Initializes custom validators by looking at the attributes in the DOM.
       findValidators() {
@@ -142,12 +147,17 @@ export default (extraValidators = {}) => {
           this.validators.push(new validators[validatorKey](validationMessage, dataAttributes, validatorGroup));
         });
       },
-      showValidationMessage() {
-        if((!this.instantValidation && !this.hasChanged) || !this.blurred) {
-          // Only show validation when has changed and instant validation is changed or after blur.
-          return;
+      showValidationMessage(forced = false) {
+        if (!forced && !this.shouldValidate) {
+            return;
         }
+        
+        if (!this.$refs.message) {
+            return;
+        }
+
         this.$refs.message.innerHTML = this.validationMessage;
+        
         if(this.validationMessage) {
           this.hasValidationError = true;
           return this.$refs.message.classList.remove(validClass);
@@ -165,6 +175,21 @@ export default (extraValidators = {}) => {
       }
     },
     computed: {
+      shouldValidate() {
+        if (this.validationStyle === validationStyles.afterBlur && !this.hasBlurred) {
+            return false;
+        }
+          
+        if (this.validationStyle === validationStyles.afterSubmit && !this.hasForced) {
+          return false;
+        }
+
+        if (this.validationStyle === validationStyles.afterChange && !this.hasChanged) {
+          return false;
+        }
+
+        return true;
+      },
       isValid() {
         return this.validators.filter(validator => {
             return validator.isValid(this.val);
@@ -179,10 +204,7 @@ export default (extraValidators = {}) => {
             message = validator.getMessage();
           }
         });
-        if(!message && !this.hasChanged && this.instantValidation) {
-          // User has not done anything yet, if server-side message is present, show that.
-          message = this.$refs.message.innerHTML;
-        }
+        
         return message || this.extraErrorMessage;
       },
       // This is the internally used value
@@ -212,9 +234,12 @@ export default (extraValidators = {}) => {
     },
     watch: {
       isValid() {
-        if(this.field) {
+        if(this.field && this.shouldValidate) {
           this.field.setAttribute('aria-invalid', !this.isValid);
         }
+      }, 
+      validationMessage() {
+        this.showValidationMessage();
       }
     }
   }
