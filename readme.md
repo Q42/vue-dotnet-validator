@@ -66,9 +66,11 @@ This adds a reference to the input field, so the `<validator>` instance knows wh
 
 This adds the model binding in the `<validator>` instance.
 
-`:instant-validation="false"` (optional, default is `true`)
+`validation-style=""` (optional, default is `after-blur`), validation-styles:
 
-When this is turned off the validation only triggers after the first change (instead of first blur) or on submit of the validator group.
+- `after-blur` (default): After first blur validation will be reactive.
+- `after-change`: After first change validation will be reactive, blurring a autofocus field with no input will not trigger this.
+- `after-submit`: After first submit validation will be reactive.
 
 ## Creating custom validators
 It is possible to create your own validators, below is an example of a very simple custom validator.
