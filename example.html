@@ -133,6 +133,22 @@
                     <input name="field8" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the previous input!" data-val-equalto-other="*.field7"/>
                 </label>
             </validator>
+
+	        <validator validation-style="after-change" inline-template>
+		        <label>
+			        <span asp-validation-for="stuff" ref="message" class="message"></span>
+			        <span>After change</span>
+			        <input name="field9" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+		        </label>
+	        </validator>
+
+	        <validator validation-style="after-blur" inline-template>
+		        <label>
+			        <span asp-validation-for="stuff" ref="message" class="message"></span>
+			        <span>After blur</span>
+			        <input name="field10" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+		        </label>
+	        </validator>
             <button type="submit">Register</button>
         </form>
     </vue-dotnet-validator-group>
