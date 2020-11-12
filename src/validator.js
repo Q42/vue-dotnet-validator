@@ -8,9 +8,9 @@ export default (extraValidators = {}) => {
   }
   
   const validationStyles = {
-      afterBlur: 'after-blur', // default
-      afterChange: 'after-change',
-      afterSubmit: 'after-submit'
+    afterBlur: 'after-blur', // default
+    afterChange: 'after-change',
+    afterSubmit: 'after-submit'
   } 
 
   const validClass = 'field-validation-valid';
