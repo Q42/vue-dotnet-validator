@@ -21,7 +21,7 @@ export default {
     methods: {
         validate(event) {
             let valid = true;
-            this.validators.forEach(async (validator) => {
+            this.validators.forEach(validator => {
                 validator.hasForced = true;
                 if(!validator.isValid) {
                     valid = false;
