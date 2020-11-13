@@ -22,11 +22,11 @@ export default {
         validate(event) {
             let valid = true;
             this.validators.forEach(validator => {
+                validator.hasForced = true;
                 if(!validator.isValid) {
                     valid = false;
                     event.preventDefault();
-                    validator.hasChanged = true;
-                    validator.showValidationMessage();
+                    validator.showValidationMessage(true);
                     validator.blurField(); // Force showing validation.
                 }
             });
