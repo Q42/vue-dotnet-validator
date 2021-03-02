@@ -149,7 +149,18 @@
 			        <input name="field10" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
 		        </label>
 	        </validator>
-            <button type="submit">Register</button>
+
+          <validator inline-template>
+            <label>
+              <span asp-validation-for="LastName" ref="message" class="message"></span>
+              <span>Async validator</span>
+              <test-async-component inline-template>
+                <input name="field11" type="text" ref="field" v-model="$parent.val" data-val-required="This value is required."/>
+              </test-async-component>
+            </label>
+          </validator>
+
+          <button type="submit">Register</button>
         </form>
     </vue-dotnet-validator-group>
 </div>

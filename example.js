@@ -14,19 +14,25 @@ const customValidators = {
 Vue.component('validator', validator(customValidators));
 Vue.component('vue-dotnet-validator-group', validatorGroup);
 
-
 Vue.component('test-component', {
   data() {
     return {
-        inputValue: ''
+      inputValue: ''
     }
   },
-    watch: {
-      inputValue() {
-          console.log('watcher, ', this.inputValue);
-      }
+  watch: {
+    inputValue() {
+      console.log('watcher, ', this.inputValue);
     }
+  }
 });
+
+Vue.component('test-async-component', function (resolve, reject) {
+  setTimeout(function () {
+    // Pass the component definition to the resolve callback
+    resolve({})
+  }, 2500)
+})
 
 new Vue({
     el: '#example-site'
