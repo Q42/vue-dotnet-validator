@@ -185,6 +185,10 @@ export default (extraValidators = {}) => {
     },
     computed: {
       shouldValidate() {
+        if (!this.field && this._isMounted) {
+          console.warn('Tring to validate without a field');
+        }
+
         if (this.validationStyle === validationStyles.afterBlur && !this.hasBlurred) {
             return false;
         }
@@ -201,9 +205,6 @@ export default (extraValidators = {}) => {
       },
       isValid() {
         if (!this.field) {
-          if (this._isMounted) {
-            console.warn('Tring to validate without a field');
-          }
           return false;
         }
 
