@@ -51,6 +51,8 @@ export default (extraValidators = {}) => {
       this.initialize();
     },
     mounted() {
+      validatorGroup = util.findValidatorGroup(this);
+      validatorGroup.addValidator(this);
       this.initialize();
     },
     destroyed() {
@@ -81,8 +83,6 @@ export default (extraValidators = {}) => {
           // Since vue handles 2-way binding through the 'input' event, we can check if there is something listening to it.
           this.isTwoWayBind = this.$options._parentListeners && !!this.$options._parentListeners.input;
 
-          validatorGroup = util.findValidatorGroup(this);
-
           this.findValidators();
           this.addAriaDescribedBy();
 
@@ -100,7 +100,6 @@ export default (extraValidators = {}) => {
           }
           this.field.addEventListener('change', this.changeField);
           this.field.addEventListener('input', this.changeField);
-          validatorGroup.addValidator(this);
       },
       resolveField(component) {
           if(!component) {
@@ -201,12 +200,23 @@ export default (extraValidators = {}) => {
         return true;
       },
       isValid() {
+        if (!this.field) {
+          if (this._isMounted) {
+            console.warn('Tring to validate without a field');
+          }
+          return false;
+        }
+
         return this.validators.filter(validator => {
             return validator.isValid(this.val);
           }).length === this.validators.length && !this.extraErrorMessage;
       },
       // Returns the error-message
       validationMessage() {
+        if (!this.field) {
+          return 'The field was not ready yet, please try again.';
+        }
+
         let message = '';
         this.validators.forEach(validator => {
           const valid = validator.isValid(this.val);
