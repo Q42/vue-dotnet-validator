@@ -1,3 +1,4 @@
+/* global process */
 import * as defaultValidators from'./validators';
 import util from './util';
 
@@ -6,12 +7,12 @@ export default (extraValidators = {}) => {
     ...defaultValidators,
     ...extraValidators
   }
-  
+
   const validationStyles = {
     afterBlur: 'after-blur', // default
     afterChange: 'after-change',
     afterSubmit: 'after-submit'
-  } 
+  }
 
   const validClass = 'field-validation-valid';
   let validatorGroup = null;
@@ -46,45 +47,13 @@ export default (extraValidators = {}) => {
         field: null
       };
     },
+    updated() {
+      this.initialize();
+    },
     mounted() {
-      // Retrieve server-side value from DOM.
-      //this.localInputValue = this.$refs.field.value;
-      this.$nextTick(() => {
-        this.field = this.resolveField(this);
-
-        if(!this.field) {
-            console.error('Field is missing!', this);
-            return;
-        }
-
-        this.name = this.field.name;
-
-        // We need to know if 2-way binding is being used so we know where to store the adjusted value.
-        // This check is a little bit dirty, but the only thing that works.
-        // Since vue handles 2-way binding through the 'input' event, we can check if there is something listening to it.
-        this.isTwoWayBind = this.$options._parentListeners && !!this.$options._parentListeners.input;
-
-        validatorGroup = util.findValidatorGroup(this);
-
-        this.findValidators();
-        this.addAriaDescribedBy();
-
-        if(this.$refs.message.innerText) {
-          // When we already have innerText, it means the server has output a validation error.
-          // We need to replace that validation message as soon as the user changes the value of the input
-          this.hasValidationError = true;
-          this.blurred = true;
-        } else {
-          this.$refs.message.classList.add(validClass);
-        }
-
-        if(!this.isCheckbox && !this.isRadio) {
-          this.field.addEventListener('blur', this.blurField);
-        }
-        this.field.addEventListener('change', this.changeField);
-        this.field.addEventListener('input', this.changeField);
-        validatorGroup.addValidator(this);
-      });
+      validatorGroup = util.findValidatorGroup(this);
+      validatorGroup.addValidator(this);
+      this.initialize();
     },
     destroyed() {
       this.$nextTick(() => {
@@ -92,6 +61,46 @@ export default (extraValidators = {}) => {
       });
     },
     methods: {
+      initialize() {
+          // already initialized
+          if (this.field) {
+              return;
+          }
+
+          this.field = this.resolveField(this);
+
+          if(!this.field) {
+              if (process.env.NODE_ENV !== 'production') {
+                console.warn('Field is missing. This could be an error or it will resolve if the input is mounted async.', this.$el);
+              }
+              return;
+          }
+
+          this.name = this.field.name;
+
+          // We need to know if 2-way binding is being used so we know where to store the adjusted value.
+          // This check is a little bit dirty, but the only thing that works.
+          // Since vue handles 2-way binding through the 'input' event, we can check if there is something listening to it.
+          this.isTwoWayBind = this.$options._parentListeners && !!this.$options._parentListeners.input;
+
+          this.findValidators();
+          this.addAriaDescribedBy();
+
+          if(this.$refs.message.innerText) {
+              // When we already have innerText, it means the server has output a validation error.
+              // We need to replace that validation message as soon as the user changes the value of the input
+              this.hasValidationError = true;
+              this.blurred = true;
+          } else {
+              this.$refs.message.classList.add(validClass);
+          }
+
+          if(!this.isCheckbox && !this.isRadio) {
+              this.field.addEventListener('blur', this.blurField);
+          }
+          this.field.addEventListener('change', this.changeField);
+          this.field.addEventListener('input', this.changeField);
+      },
       resolveField(component) {
           if(!component) {
             return null;
@@ -151,13 +160,13 @@ export default (extraValidators = {}) => {
         if (!forced && !this.shouldValidate) {
             return;
         }
-        
+
         if (!this.$refs.message) {
             return;
         }
 
         this.$refs.message.innerHTML = this.validationMessage;
-        
+
         if(this.validationMessage) {
           this.hasValidationError = true;
           return this.$refs.message.classList.remove(validClass);
@@ -176,10 +185,14 @@ export default (extraValidators = {}) => {
     },
     computed: {
       shouldValidate() {
+        if (!this.field && this._isMounted) {
+          console.warn('Tring to validate without a field');
+        }
+
         if (this.validationStyle === validationStyles.afterBlur && !this.hasBlurred) {
             return false;
         }
-          
+
         if (this.validationStyle === validationStyles.afterSubmit && !this.hasForced) {
           return false;
         }
@@ -191,12 +204,20 @@ export default (extraValidators = {}) => {
         return true;
       },
       isValid() {
+        if (!this.field) {
+          return false;
+        }
+
         return this.validators.filter(validator => {
             return validator.isValid(this.val);
           }).length === this.validators.length && !this.extraErrorMessage;
       },
       // Returns the error-message
       validationMessage() {
+        if (!this.field) {
+          return 'The field was not ready yet, please try again.';
+        }
+
         let message = '';
         this.validators.forEach(validator => {
           const valid = validator.isValid(this.val);
@@ -204,7 +225,7 @@ export default (extraValidators = {}) => {
             message = validator.getMessage();
           }
         });
-        
+
         return message || this.extraErrorMessage;
       },
       // This is the internally used value
@@ -237,7 +258,7 @@ export default (extraValidators = {}) => {
         if(this.field && this.shouldValidate) {
           this.field.setAttribute('aria-invalid', !this.isValid);
         }
-      }, 
+      },
       validationMessage() {
         this.showValidationMessage();
       }
