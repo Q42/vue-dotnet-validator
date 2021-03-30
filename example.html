@@ -42,18 +42,28 @@
                 <div>
                     <label>
                         <span asp-validation-for="checkbox1" ref="message" class="message"></span>
-                        <span>Checkbox 1</span>
-                        <input name="checkbox1" type="checkbox" value="true" asp-for="checkbox1" ref="field" data-val-required="This field is required" />
+                        <span>Checkbox 1 (required)</span>
+                        <input name="checkbox1" type="checkbox" value="true" asp-for="checkbox1" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" />
                     </label>
                 </div>
             </validator>
 
-            <validator value="true" inline-template>
+            <validator :value="true" inline-template>
                 <div>
                     <label>
                         <span asp-validation-for="checkbox2" ref="message" class="message"></span>
-                        <span>Checkbox 2 (default checked)</span>
-                        <input name="checkbox2" type="checkbox" value="true" asp-for="checkbox2" ref="field" data-val-required="This field is required" checked="checked" />
+                        <span>Checkbox 2 (default checked, required)</span>
+                        <input name="checkbox2" type="checkbox" value="true" asp-for="checkbox2" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" checked="checked" />
+                    </label>
+                </div>
+            </validator>
+
+            <validator value="false" inline-template>
+                <div>
+                    <label>
+                        <span asp-validation-for="checkbox3" ref="message" class="message"></span>
+                        <span>Checkbox 3 (not required)</span>
+                        <input name="checkbox3" type="checkbox" value="false" asp-for="checkbox3" ref="field" data-val-required="This field is required" />
                     </label>
                 </div>
             </validator>
