@@ -42,7 +42,7 @@
                 <div>
                     <label>
                         <span asp-validation-for="checkbox1" ref="message" class="message"></span>
-                        <span>Checkbox 1 (required)</span>
+                        <span>Checkbox 1 (required, has to be true)</span>
                         <input name="checkbox1" type="checkbox" value="true" asp-for="checkbox1" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" />
                     </label>
                 </div>
@@ -52,7 +52,7 @@
                 <div>
                     <label>
                         <span asp-validation-for="checkbox2" ref="message" class="message"></span>
-                        <span>Checkbox 2 (default checked, required)</span>
+                        <span>Checkbox 2 (default checked, required, has to be true)</span>
                         <input name="checkbox2" type="checkbox" value="true" asp-for="checkbox2" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" checked="checked" />
                     </label>
                 </div>
@@ -62,7 +62,7 @@
                 <div>
                     <label>
                         <span asp-validation-for="checkbox3" ref="message" class="message"></span>
-                        <span>Checkbox 3 (not required)</span>
+                        <span>Checkbox 3 (can be false)</span>
                         <input name="checkbox3" type="checkbox" value="false" asp-for="checkbox3" ref="field" data-val-required="This field is required" />
                     </label>
                 </div>
