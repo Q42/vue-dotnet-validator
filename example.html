@@ -170,6 +170,14 @@
             </label>
           </validator>
 
+          <validator inline-template>
+            <label>
+              <span asp-validation-for="LastName" ref="message" class="message">Error set by server</span>
+              <span>Server set error</span>
+              <input name="field12" type="text" asp-for="LastName" ref="field" v-model="val" />
+            </label>
+          </validator>
+
           <button type="submit">Register</button>
         </form>
     </vue-dotnet-validator-group>
