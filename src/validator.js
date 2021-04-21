@@ -210,7 +210,7 @@ export default (extraValidators = {}) => {
 
         return this.validators.filter(validator => {
             return validator.isValid(this.val);
-          }).length === this.validators.length && !this.extraErrorMessage;
+          }).length === this.validators.length && !this.extraErrorMessage && !this.hasValidationError;
       },
       // Returns the error-message
       validationMessage() {
