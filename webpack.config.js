@@ -21,21 +21,18 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        include: /src/,
-        loader: "ts-loader",
-        options: {
-          transpileOnly: true,
-          appendTsSuffixTo: [/\.vue$/]
-        }
+        test: /\.vue$/,
+        loader: 'vue-loader'
       },
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.vue'],
     alias: {
       vue: 'vue/dist/vue.esm-bundler.js'
-    }
+    },
+    extensions: ['.ts', '.tsx', '.vue', '.vuex', '.js'],
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ]
 };

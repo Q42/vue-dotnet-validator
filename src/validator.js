@@ -19,6 +19,7 @@ export default (extraValidators = {}) => {
 
   return {
     name: 'vue-dotnet-validator',
+    template: '<slot v-bind="{ isValid, shouldValidate}" />',
     props: {
       // Value is the value that will be validated
       value: {
@@ -119,6 +120,9 @@ export default (extraValidators = {}) => {
       blurField(event) {
         if(event && event.target.value !== '') {
           this.val = event.target.value;
+
+
+
         }
         this.blurred = true;
         this.hasBlurred = true;

@@ -46,7 +46,6 @@
   ],
   "dependencies": {
     "@vue/compiler-sfc": "^3.1.5",
-    "ts-loader": "^9.2.4",
     "vue-class-component": "^8.0.0-rc.1",
     "vue-loader": "^16.3.3"
   }

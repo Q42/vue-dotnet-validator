@@ -21,159 +21,159 @@
 </head>
 <body>
 <div id="example-site">
-  <h2>Vue App</h2>
-<!--    <vue-dotnet-validator-group>-->
-<!--        <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="validate">-->
-<!--            <validator inline-template>-->
-<!--                <div>-->
-<!--                    <label>-->
-<!--                        <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                        <span>Radio button 1</span>-->
-<!--                        <input name="radio1" type="radio" value="number1" asp-for="Radio1" ref="field" v-model="val" data-val-required="This field is required" />-->
-<!--                    </label>-->
-<!--                    <label>-->
-<!--                        <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                        <span>Radio button 2</span>-->
-<!--                        <input name="radio1" type="radio" value="number2" asp-for="Radio1" ref="field" v-model="val" data-val-required="This field is required" />-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </validator>-->
+  <some-component></some-component>
+    <vue-dotnet-validator-group v-slot:default="slotProps">
+       <form asp-controller="Account" asp-action="Register" method="post" v-on:submit="slotProps.validate">
+            <validator>
+                <div>
+                    <label>
+                        <span asp-validation-for="LastName" ref="message" class="message"></span>
+                        <span>Radio button 1</span>
+                        <input name="radio1" type="radio" value="number1" asp-for="Radio1" ref="field" v-model="val" data-val-required="This field is required" />
+                    </label>
+                    <label>
+                        <span asp-validation-for="LastName" ref="message" class="message"></span>
+                        <span>Radio button 2</span>
+                        <input name="radio1" type="radio" value="number2" asp-for="Radio1" ref="field" v-model="val" data-val-required="This field is required" />
+                    </label>
+                </div>
+            </validator>
 
-<!--            <validator inline-template>-->
-<!--                <div>-->
-<!--                    <label>-->
-<!--                        <span asp-validation-for="checkbox1" ref="message" class="message"></span>-->
-<!--                        <span>Checkbox 1 (required, has to be true)</span>-->
-<!--                        <input name="checkbox1" type="checkbox" value="true" asp-for="checkbox1" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" />-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </validator>-->
+            <validator >
+                <div>
+                    <label>
+                        <span asp-validation-for="checkbox1" ref="message" class="message"></span>
+                        <span>Checkbox 1 (required, has to be true)</span>
+                        <input name="checkbox1" type="checkbox" value="true" asp-for="checkbox1" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" />
+                    </label>
+                </div>
+            </validator>
 
-<!--            <validator :value="true" inline-template>-->
-<!--                <div>-->
-<!--                    <label>-->
-<!--                        <span asp-validation-for="checkbox2" ref="message" class="message"></span>-->
-<!--                        <span>Checkbox 2 (default checked, required, has to be true)</span>-->
-<!--                        <input name="checkbox2" type="checkbox" value="true" asp-for="checkbox2" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" checked="checked" />-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </validator>-->
+            <validator :value="true" >
+                <div>
+                    <label>
+                        <span asp-validation-for="checkbox2" ref="message" class="message"></span>
+                        <span>Checkbox 2 (default checked, required, has to be true)</span>
+                        <input name="checkbox2" type="checkbox" value="true" asp-for="checkbox2" ref="field" data-val-istrue="This field must be true" data-val-required="This field is required" checked="checked" />
+                    </label>
+                </div>
+            </validator>
 
-<!--            <validator value="false" inline-template>-->
-<!--                <div>-->
-<!--                    <label>-->
-<!--                        <span asp-validation-for="checkbox3" ref="message" class="message"></span>-->
-<!--                        <span>Checkbox 3 (can be false)</span>-->
-<!--                        <input name="checkbox3" type="checkbox" value="false" asp-for="checkbox3" ref="field" data-val-required="This field is required" />-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </validator>-->
+            <validator value="false" >
+                <div>
+                    <label>
+                        <span asp-validation-for="checkbox3" ref="message" class="message"></span>
+                        <span>Checkbox 3 (can be false)</span>
+                        <input name="checkbox3" type="checkbox" value="false" asp-for="checkbox3" ref="field" data-val-required="This field is required" />
+                    </label>
+                </div>
+            </validator>
 
-<!--            <validator inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                    <span>Required validator</span>-->
-<!--                    <input name="field1" type="text" asp-for="LastName" ref="field" v-model="val" data-val-required="This field is required" />-->
-<!--                </label>-->
-<!--            </validator>-->
+            <validator >
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Required validator</span>
+                    <input name="field1" type="text" asp-for="LastName" ref="field" v-model="val" data-val-required="This field is required" />
+                </label>
+            </validator>
 
-<!--            <validator inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                    <span>Maximum length validator</span>-->
-<!--                    <input name="field2" type="text" asp-for="ShortName" ref="field" v-model="val" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />-->
-<!--                </label>-->
-<!--            </validator>-->
+            <validator >
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Maximum length validator</span>
+                    <input name="field2" type="text" asp-for="ShortName" ref="field" v-model="val" data-val-maxlength="You can only use less then 10 characters" data-val-maxlength-max="10" />
+                </label>
+            </validator>
 
-<!--            <validator inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                    <span>Range validator</span>-->
-<!--                    <input name="field3" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>-->
-<!--                </label>-->
-<!--            </validator>-->
+            <validator >
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Range validator</span>
+                    <input name="field3" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5"/>
+                </label>
+            </validator>
 
-<!--            <validator inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                    <span>Required range validator</span>-->
-<!--                    <input name="field4" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>-->
-<!--                </label>-->
-<!--            </validator>-->
-
-
-<!--            <validator value="Predefined value" inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                    <span>Custom validator</span>-->
-<!--                    <input name="field5" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-mycustomvalidator="Value should be 'Hello'"/>-->
-<!--                </label>-->
-<!--            </validator>-->
+            <validator >
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Required range validator</span>
+                    <input name="field4" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-range="You should use a number between 3 and 5" data-val-range-min="3" data-val-range-max="5" data-val-required="This field is required"/>
+                </label>
+            </validator>
 
 
-<!--            <test-component inline-template>-->
-<!--                <validator v-model="inputValue" inline-template>-->
-<!--                    <label>-->
-<!--                        <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--                        <span>Custom component container validator</span>-->
-<!--                        <input name="field6" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-mycustomvalidator="Value should be 'Hello'"/>-->
-<!--                    </label>-->
-<!--                </validator>-->
-<!--            </test-component>-->
+            <validator value="Predefined value" >
+                <label>
+                    <span asp-validation-for="LastName" ref="message" class="message"></span>
+                    <span>Custom validator</span>
+                    <input name="field5" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-mycustomvalidator="Value should be 'Hello'"/>
+                </label>
+            </validator>
 
-<!--            <validator value="value from server" inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="stuff" ref="message" class="message">Message from server!</span>-->
-<!--                    <span>Server side message</span>-->
-<!--                    <input name="field6" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>-->
-<!--                </label>-->
-<!--            </validator>-->
 
-<!--            <validator value="" inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="stuff" ref="message" class="message"></span>-->
-<!--                    <span>Equal to</span>-->
-<!--                    <input name="field7" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the next input!" data-val-equalto-other="*.field8"/>-->
-<!--                </label>-->
-<!--            </validator>-->
+            <test-component >
+                <validator v-model="inputValue" >
+                    <label>
+                        <span asp-validation-for="LastName" ref="message" class="message"></span>
+                        <span>Custom component container validator</span>
+                        <input name="field6" type="text" asp-for="RangeTest" ref="field" v-model="val" data-val-mycustomvalidator="Value should be 'Hello'"/>
+                    </label>
+                </validator>
+            </test-component>
 
-<!--            <validator value="" inline-template>-->
-<!--                <label>-->
-<!--                    <span asp-validation-for="stuff" ref="message" class="message"></span>-->
-<!--                    <span>Equal to</span>-->
-<!--                    <input name="field8" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the previous input!" data-val-equalto-other="*.field7"/>-->
-<!--                </label>-->
-<!--            </validator>-->
+            <validator value="value from server" >
+                <label>
+                    <span asp-validation-for="stuff" ref="message" class="message">Message from server!</span>
+                    <span>Server side message</span>
+                    <input name="field6" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+                </label>
+            </validator>
 
-<!--	        <validator validation-style="after-change" inline-template>-->
-<!--		        <label>-->
-<!--			        <span asp-validation-for="stuff" ref="message" class="message"></span>-->
-<!--			        <span>After change</span>-->
-<!--			        <input name="field9" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>-->
-<!--		        </label>-->
-<!--	        </validator>-->
+            <validator value="" >
+                <label>
+                    <span asp-validation-for="stuff" ref="message" class="message"></span>
+                    <span>Equal to</span>
+                    <input name="field7" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the next input!" data-val-equalto-other="*.field8"/>
+                </label>
+            </validator>
 
-<!--	        <validator validation-style="after-blur" inline-template>-->
-<!--		        <label>-->
-<!--			        <span asp-validation-for="stuff" ref="message" class="message"></span>-->
-<!--			        <span>After blur</span>-->
-<!--			        <input name="field10" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>-->
-<!--		        </label>-->
-<!--	        </validator>-->
+            <validator value="" >
+                <label>
+                    <span asp-validation-for="stuff" ref="message" class="message"></span>
+                    <span>Equal to</span>
+                    <input name="field8" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required." data-val-equalto="Must be equal to the previous input!" data-val-equalto-other="*.field7"/>
+                </label>
+            </validator>
 
-<!--          <validator inline-template>-->
-<!--            <label>-->
-<!--              <span asp-validation-for="LastName" ref="message" class="message"></span>-->
-<!--              <span>Async validator</span>-->
-<!--              <test-async-component inline-template>-->
-<!--                <input name="field11" type="text" ref="field" v-model="$parent.val" data-val-required="This value is required."/>-->
-<!--              </test-async-component>-->
-<!--            </label>-->
-<!--          </validator>-->
+	        <validator validation-style="after-change" >
+		        <label>
+			        <span asp-validation-for="stuff" ref="message" class="message"></span>
+			        <span>After change</span>
+			        <input name="field9" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+		        </label>
+	        </validator>
 
-<!--          <button type="submit">Register</button>-->
-<!--        </form>-->
-<!--    </vue-dotnet-validator-group>-->
+	        <validator validation-style="after-blur" >
+		        <label>
+			        <span asp-validation-for="stuff" ref="message" class="message"></span>
+			        <span>After blur</span>
+			        <input name="field10" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+		        </label>
+	        </validator>
+
+          <validator >
+            <label>
+              <span asp-validation-for="LastName" ref="message" class="message"></span>
+              <span>Async validator</span>
+              <test-async-component >
+                <input name="field11" type="text" ref="field" v-model="$parent.val" data-val-required="This value is required."/>
+              </test-async-component>
+            </label>
+          </validator>
+
+          <button type="submit">Register</button>
+        </form>
+    </vue-dotnet-validator-group>
 </div>
 
 <script src="./dist/example.js"></script>
