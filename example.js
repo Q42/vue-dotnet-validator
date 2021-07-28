@@ -1,10 +1,7 @@
 /* global Vue */
 import { validatorGroup, validator, BaseValidator } from './index';
-import newValidatorGroup from './src/validator-group-new';
-import newValidator from './src/validator-new';
-
 import { createApp } from 'vue'
-import SomeComponent from './src/components/SomeComponent.vue'
+import Component from './src/components/Component.vue'
 
 class MyCustomValidator extends BaseValidator {
   isValid(value) {
@@ -20,10 +17,7 @@ const app = createApp({})
   .component('validator', validator(customValidators))
   .component('vue-dotnet-validator-group', validatorGroup)
 
-  .component('validator-new', newValidator(customValidators))
-  .component('validator-group-new', newValidatorGroup)
-
-  .component('some-component', SomeComponent)
+  .component('component', Component)
   .component('test-component', {
     data() {
       return {
@@ -37,10 +31,10 @@ const app = createApp({})
     }
   })
   .component('test-async-component', function (resolve, reject) {
-    // setTimeout(function () {
-    //   // Pass the component definition to the resolve callback
-    //   resolve({})
-    // }, 2500)
+    setTimeout(function () {
+      // Pass the component definition to the resolve callback
+      resolve({})
+    }, 2500)
   })
 
 app.mount('#example-site')

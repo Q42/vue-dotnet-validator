@@ -1,58 +1,54 @@
 function endsWith(string, suffix) {
-  return string.indexOf(suffix, string.length - suffix.length) !== -1
+  return string.indexOf(suffix, string.length - suffix.length) !== -1;
 }
+
 
 export default {
   name: 'vue-dotnet-validator-group',
+  template: '<slot v-bind="{ validate, validators, loading, isValidatorGroup, findValidatorsByName, addValidator, removeValidator }" />',
   props: {
     onValid: {
       type: Function,
       default: null
     }
   },
-  template:
-    '<slot v-bind="{ validate, validators, loading, isValidatorGroup, findValidatorsByName, addValidator, removeValidator }" />',
   data() {
     return {
       validators: [],
       loading: false,
-      isValidatorGroup: true
+      isValidatorGroup: true,
     }
   },
   methods: {
     validate(event) {
-      let valid = true
+      let valid = true;
       this.validators.forEach(validator => {
-        validator.hasForced = true
-
-        if (!validator.isValid) {
-          // event can be null when validate method is called directly
-          if (event) event.preventDefault()
-
-          valid = false
-          validator.showValidationMessage(true)
-          validator.blurField() // Force showing validation.
+        validator.hasForced = true;
+        if(!validator.isValid) {
+          valid = false;
+          event.preventDefault();
+          validator.showValidationMessage(true);
+          validator.blurField(); // Force showing validation.
         }
-      })
-      if (valid && this.onValid instanceof Function) {
-        // event can be null when validate method is called directly
-        if (event) event.preventDefault()
-        return this.onValid(event)
+      });
+      if(valid && this.onValid instanceof Function) {
+        event.preventDefault();
+        return this.onValid(event);
       }
 
-      this.loading = valid
-      return valid
+      this.loading = valid;
+      return valid;
     },
     findValidatorsByName(name) {
       // Normalize string, in some cases the name contains a * or a ., like in equal-to validation.
-      name = name.replace(/\*/g, '').replace(/\./g, '')
-      return this.validators.filter(validator => endsWith(validator.name, name))
+      name = name.replace(/\*/g, '').replace(/\./g, '');
+      return this.validators.filter(validator => endsWith(validator.name, name));
     },
     addValidator(validator) {
-      this.validators.push(validator)
+      this.validators.push(validator);
     },
     removeValidator(validator) {
-      this.validators.splice(this.validators.indexOf(validator), 1)
+      this.validators.splice(this.validators.indexOf(validator), 1);
     }
   }
-}
+};
