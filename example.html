@@ -160,12 +160,20 @@
 		        </label>
 	        </validator>
 
+          <validator prioritize-extra-error-message extra-error-message="you should only see this message" inline-template>
+            <label>
+              <span asp-validation-for="stuff" ref="message" class="message"></span>
+              <span>Prioritize extra error message</span>
+              <input name="field11" type="text" asp-for="stuff" ref="field" v-model="val" data-val-required="This value is required."/>
+            </label>
+          </validator>
+
           <validator inline-template>
             <label>
               <span asp-validation-for="LastName" ref="message" class="message"></span>
               <span>Async validator</span>
               <test-async-component inline-template>
-                <input name="field11" type="text" ref="field" v-model="$parent.val" data-val-required="This value is required."/>
+                <input name="field12" type="text" ref="field" v-model="$parent.val" data-val-required="This value is required."/>
               </test-async-component>
             </label>
           </validator>
