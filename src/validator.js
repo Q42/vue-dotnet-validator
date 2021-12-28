@@ -106,7 +106,6 @@ export default (extraValidators = {}) => {
           this.field.addEventListener('input', this.changeField);
       },
       resolveField(component) {
-          console.log('field:', component.$refs.field)
           if(!component) {
             return null;
           }
@@ -169,7 +168,6 @@ export default (extraValidators = {}) => {
         if (!this.$refs.message) {
             return;
         }
-        console.log('show validation', this.validationMessage)
 
         this.$refs.message.innerHTML = this.validationMessage;
 
@@ -231,8 +229,6 @@ export default (extraValidators = {}) => {
             message = validator.getMessage();
           }
         });
-
-        console.log('message:', this.prioritizeExtraErrorMessage ? this.extraErrorMessage || message : message || this.extraErrorMessage)
 
         return this.prioritizeExtraErrorMessage ? this.extraErrorMessage || message : message || this.extraErrorMessage;
       },
