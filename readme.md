@@ -83,6 +83,10 @@ This adds the model binding in the `<validator>` instance.
 - `after-change`: After first change validation will be reactive, blurring an autofocus field with no input will not trigger this.
 - `after-submit`: After first submit validation will be reactive.
 
+`prioritize-extra-error-message`
+
+This prioritizes the (optional) extra error messages over the normal validation messages.
+
 ## Built-in validators
 
 There are a couple of built-in validators you can use.

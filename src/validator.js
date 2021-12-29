@@ -30,6 +30,10 @@ export default (extraValidators = {}) => {
       },
       validationStyle: {
         default: validationStyles.afterBlur
+      },
+      prioritizeExtraErrorMessage: {
+        default: false,
+        type: Boolean
       }
     },
     data() {
@@ -226,7 +230,7 @@ export default (extraValidators = {}) => {
           }
         });
 
-        return message || this.extraErrorMessage;
+        return this.prioritizeExtraErrorMessage ? this.extraErrorMessage || message : message || this.extraErrorMessage;
       },
       // This is the internally used value
       val: {
